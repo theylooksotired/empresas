@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure PlaceReport
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+	<name>PlaceReport</name>
+	<table>place_report</table>
+	<info>
+		<sql>
+			<primary>id</primary>
+			<created>true</created>
+			<modified>true</modified>
+		</sql>
+		<form>
+			<title>reports</title>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
+		</form>
+	</info>
+	<attributes>
+		<attribute>
+            <name>id</name>
+            <type>id_autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>id_place</name>
+            <type>linkid_autoincrement</type>
+            <refObject>Place</refObject>
+        </attribute>
+        <attribute>
+            <name>message</name>
+            <label>Razón o motivo para borrar esta empresa</label>
+            <required>not_empty</required>
+            <type>textarea</type>
+        </attribute>
+	</attributes>
+</object>

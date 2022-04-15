@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure PlaceCategory
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion\Base
+* @version 4.0.0
+-->
+<object>
+	<name>PlaceCategory</name>
+	<table>place_category</table>
+	<info>
+		<sql>
+            <primary>id</primary>
+            <created>true</created>
+            <modified>true</modified>
+        </sql>
+		<form>
+			<hiddenAdminMenu>true</hiddenAdminMenu>
+		</form>
+	</info>
+	<attributes>
+		<attribute>
+            <name>id</name>
+            <type>id_autoincrement</type>
+        </attribute>
+		<attribute>
+			<name>id_place</name>
+			<type>linkid_autoincrement</type>
+			<refObject>Place</refObject>
+		</attribute>
+		<attribute>
+			<name>id_category</name>
+			<type>linkid_autoincrement</type>
+			<refObject>Category</refObject>
+		</attribute>
+	</attributes>
+    <indexes>
+        <index>
+            <name>id_place</name>
+            <fields>id_place</fields>
+        </index>
+        <index>
+            <name>id_category</name>
+            <fields>id_category</fields>
+        </index>
+        <index>
+            <name>place_category</name>
+            <fields>id_category,id_place</fields>
+            <type>UNIQUE</type>
+        </index>
+    </indexes>
+</object>

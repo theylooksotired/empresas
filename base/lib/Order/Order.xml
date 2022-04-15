@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Order
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Order</name>
+    <table>order</table>
+    <info>
+        <sql>
+            <primary>id</primary>
+            <created>true</created>
+            <modified>true</modified>
+        </sql>
+        <form>
+            <title>orders</title>
+            <orderBy>created DESC</orderBy>
+            <label>#id</label>
+            <templateItemAdmin>
+                #payed
+                <div class="item_information">
+                    <p class="accent"><strong>_order : #id</strong></p>
+                    <p class="tiny">#created</p>
+                </div>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>id</name>
+            <type>id_autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>id_place</name>
+            <type>linkid_autoincrement</type>
+            <label>place</label>
+            <layout>label</layout>
+            <refObject>Place</refObject>
+        </attribute>
+        <attribute>
+            <name>id_place_edit</name>
+            <type>linkid_autoincrement</type>
+            <label>place_edit</label>
+            <layout>label</layout>
+            <refObject>PlaceEdit</refObject>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <label>name</label>
+            <required>not_empty</required>
+            <type>text_long</type>
+        </attribute>
+        <attribute>
+            <name>email</name>
+            <label>email</label>
+            <required>email</required>
+            <type>text_email</type>
+        </attribute>
+        <attribute>
+            <name>price</name>
+            <label>price</label>
+            <type>text</type>
+        </attribute>
+        <attribute>
+            <name>payment_type</name>
+            <label>payment_type</label>
+            <type>radio</type>
+            <values>
+            	<value id="deposit">payment_type_deposit</value>
+                <value id="paypal">payment_type_paypal</value>
+            </values>
+        </attribute>
+        <attribute>
+            <name>status</name>
+            <label>status</label>
+            <type>select</type>
+            <values>
+                <value id="created">created</value>
+                <value id="payed">payed</value>
+                <value id="failed">failed</value>
+            </values>
+        </attribute>
+    </attributes>
+</object>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Section
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion\Base
+* @version 4.0.0
+-->
+<object>
+    <name>Section</name>
+    <table>section</table>
+    <info>
+        <sql>
+            <primary>id</primary>
+            <created>true</created>
+            <modified>true</modified>
+        </sql>
+        <form>
+            <title>sections</title>
+            <label>#name</label>
+            <icon>tag</icon>
+            <publicUrl>seccion / #name_url</publicUrl>
+            <orderBy>name_url</orderBy>
+            <templateItemAdmin>
+                <p class="accent"><strong>#name</strong></p>
+                <p class="small">#categories</p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>id</name>
+            <type>id_autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>image</name>
+            <label>image</label>
+            <type>file</type>
+            <mode>image</mode>
+        </attribute>
+        <attribute>
+            <name>icon</name>
+            <label>icon</label>
+            <type>text</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <label>name</label>
+            <required>not_empty</required>
+            <type>text_long</type>
+        </attribute>
+        <attribute>
+            <name>name_url</name>
+            <type>hidden_url</type>
+            <refAttribute>name</refAttribute>
+        </attribute>
+        <attribute>
+            <name>name_plural</name>
+            <label>name_plural</label>
+            <required>not_empty</required>
+            <type>text_long</type>
+        </attribute>
+        <attribute>
+            <name>name_plural_url</name>
+            <type>hidden_url</type>
+            <refAttribute>name_plural</refAttribute>
+        </attribute>
+        <attribute>
+            <name>description</name>
+            <label>description</label>
+            <type>textarea_long</type>
+        </attribute>
+        <attribute>
+            <name>cities</name>
+            <label>cities</label>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>categories</name>
+            <label>categories</label>
+            <type>multiple_object</type>
+            <refObject>Category</refObject>
+            <linkAttribute>id_section</linkAttribute>
+            <mode>count</mode>
+            <onDelete>cascade</onDelete>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>name_url</name>
+            <fields>name_url</fields>
+        </index>
+    </indexes>
+</object>
