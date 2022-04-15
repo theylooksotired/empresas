@@ -599,32 +599,6 @@ class Navigation_Controller extends Controller
                 }
                 return $this->ui->render();
                 break;
-
-            /**
-                 * GITHUB
-                 */
-            case 'check-github-now':
-                $this->mode = 'ajax';
-                $this->checkAuthorization();
-                $url = "https://github.com/theylooksotired/empresas/archive/master.zip";
-                $zipFile = LOCAL_FILE . "master.zip";
-                file_put_contents($zipFile, fopen($url, 'r'));
-                $zip = new ZipArchive;
-                $res = $zip->open($zipFile);
-                if ($res === true) {
-                    $zip->extractTo('.');
-                    $zip->close();
-                }
-                unlink($zipFile);
-                shell_exec('cp -r ' . LOCAL_FILE . 'directorio-master/* ' . LOCAL_FILE);
-                shell_exec('rm -rf ' . LOCAL_FILE . 'directorio-master');
-                File::createDirectory(BASE_FILE . 'cache', false);
-                if (is_writable(BASE_FILE . 'cache')) {
-                    Cache::cacheAll();
-                }
-                return 'DONE';
-                break;
-
         }
     }
 

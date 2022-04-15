@@ -3,3 +3,4 @@ base/config/
 base/cache/
 base/stock/
 app/
+mysql.queries
