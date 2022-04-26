@@ -2,5 +2,5 @@
 base/config/
 base/cache/
 base/stock/
-app/
+app
 mysql.queries
