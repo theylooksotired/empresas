@@ -6,7 +6,7 @@
     <meta name="description" content="<?php echo $metaDescription;?>"/>
     <meta name="keywords" content="<?php echo $metaKeywords;?>"/>
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-    <?php echo Parameter::code('metainfo-google-webmasters');?>
+    <?php echo Parameter::code('google_webmasters');?>
 
     <meta property="og:title" content="<?php echo $title;?>" />
     <meta property="og:description" content="<?php echo $metaDescription;?>" />

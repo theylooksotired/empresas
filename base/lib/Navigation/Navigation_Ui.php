@@ -317,12 +317,12 @@ class Navigation_Ui extends Ui
     public static function analytics()
     {
         return '
-            <script async src="https://www.googletagmanager.com/gtag/js?id=' . Parameter::code('metainfo-google-analytics') . '"></script>
+            <script async src="https://www.googletagmanager.com/gtag/js?id=' . Parameter::code('google_analytics') . '"></script>
             <script>
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag(\'js\', new Date());
-              gtag(\'config\', \'' . Parameter::code('metainfo-google-analytics') . '\');
+              gtag(\'config\', \'' . Parameter::code('google_analytics') . '\');
             </script>';
     }
 
@@ -330,7 +330,7 @@ class Navigation_Ui extends Ui
     {
         return '
             <amp-analytics type="googleanalytics">
-                <script type="application/json">{"vars": {"account": "' . Parameter::code('metainfo-google-analytics') . '"}, "triggers": { "trackPageview": { "on": "visible", "request": "pageview"}}}</script>
+                <script type="application/json">{"vars": {"account": "' . Parameter::code('google_analytics') . '"}, "triggers": { "trackPageview": { "on": "visible", "request": "pageview"}}}</script>
             </amp-analytics>';
     }
 
