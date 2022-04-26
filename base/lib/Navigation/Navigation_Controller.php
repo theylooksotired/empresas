@@ -599,6 +599,12 @@ class Navigation_Controller extends Controller
                 }
                 return $this->ui->render();
                 break;
+            case 'cache_all':
+                if ($this->checkAuthorization()) {
+                    Cache::cacheAll();
+                    echo 1;
+                }
+                break;
         }
     }
 

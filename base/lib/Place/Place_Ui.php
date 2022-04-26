@@ -425,25 +425,6 @@ class Place_Ui extends Ui
     /**
      * @cache
      */
-    public static function renderTags()
-    {
-        $query = 'SELECT t.id, t.name, t.name_url, COUNT(t.id) as countitems
-					FROM ' . (new Tag)->tableName . ' t, ' . (new PlaceTag)->tableName . ' pt
-					WHERE t.id=pt.id_tag
-					GROUP BY t.name_url
-					ORDER BY countitems DESC
-					LIMIT 24';
-        $items = Db::returnAll($query);
-        $html = '';
-        foreach ($items as $item) {
-            $html .= '<a href="' . url('tag/' . $item['id'] . '-' . $item['name_url']) . '">' . $item['name'] . '</a> ';
-        }
-        return $html;
-    }
-
-    /**
-     * @cache
-     */
     public static function renderCategories()
     {
         $query = 'SELECT c.id, c.name_plural, c.name_plural_url, COUNT(c.id) as countitems

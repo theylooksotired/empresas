@@ -242,7 +242,7 @@ class Navigation_Ui extends Ui
                 <div class="content_side content_side_cities">
                     <h2>Ciudades</h2>
                     <div class="content_side_items">
-                        ' . $place->showUi('CitiesTag') . '
+                        ' . $place->showUi('Cities') . '
                     </div>
                     <div class="content_side_button">
                         <a href="' . url('ciudad') . '">Ver todas las ciudades</a>
