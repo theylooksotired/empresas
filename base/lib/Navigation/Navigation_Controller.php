@@ -571,6 +571,7 @@ class Navigation_Controller extends Controller
                         case 'lugar-editar-publicar-promocionar':
                             $placeEdit->loadCategories();
                             $values = $placeEdit->values;
+                            unset($values['id']);
                             $values['image'] = $placeEdit->getImageUrl('image', 'web');
                             $place = new Place($values);
                             $persist = $place->persist();
