@@ -540,7 +540,7 @@ class Navigation_Controller extends Controller
                 $this->checkAuthorization();
                 $this->mode = 'json';
                 $response = ['status'=>StatusCode::OK, 'places'=>[], 'reports'=>[]];
-                $places = (new PlaceEdit)->readList(['order'=>'id DESC']);
+                $places = (new PlaceEdit)->readList(['where'=>'published!="1"', 'order'=>'id DESC']);
                 foreach ($places as $place) {
                     $response['places'][] = $place->values;
                 }
