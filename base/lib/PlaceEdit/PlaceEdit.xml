@@ -172,5 +172,10 @@
             <label>Promocionado</label>
             <type>checkbox</type>
         </attribute>
+        <attribute>
+            <name>published</name>
+            <label>Publicado en el sitio</label>
+            <type>checkbox</type>
+        </attribute>
     </attributes>
 </object>

@@ -333,7 +333,7 @@ class Navigation_Controller extends Controller
                         $persist = $placeEdit->persist();
                         if ($persist['status'] == StatusCode::OK) {
                             $placeEdit->saveCategories($this->values);
-                            $placeEdit->saveOrder();
+                            $placeEdit->saveOrder('inscribir-gracias');
                         } else {
                             Session::flashError('Hay errores en el formulario, por favor revíselos.');
                             $form = new PlaceEdit_Form($persist['values'], $persist['errors']);
@@ -529,82 +529,115 @@ class Navigation_Controller extends Controller
                 break;
 
             /**
-                 * PRIVATE ADMIN
-                 */
+             * PRIVATE ADMIN
+             */
             case 'lugar-imagen-temporal':
                 $this->mode = 'json';
                 $response = File::uploadTempImage($this->values);
                 return json_encode($response);
                 break;
-                break;
-            case 'lugar-borrar':
-            case 'lugar-promocionar':
-            case 'lugar-depromocionar':
-                $this->desactivateRobots();
-                $place = (new Place)->readCoded($this->id);
-                $this->layout_page = 'empty';
-                if ($place->id() != '') {
-                    switch ($this->action) {
-                        case 'lugar-borrar':
-                            $this->message = 'La empresa ha sido borrada. Verifique haciendo click en ' . $place->link();
-                            $place->delete();
-                            break;
-                        case 'lugar-promocionar':
-                            $this->message = 'La empresa ha sido promocionada. Verifique haciendo click en ' . $place->link();
-                            $place->persistSimple('promoted', '1');
-                            break;
-                        case 'lugar-depromocionar':
-                            $this->message = 'La empresa ha sido promocionada. Verifique haciendo click en ' . $place->link();
-                            $place->persistSimple('promoted', '0');
-                            break;
-                    }
-                } else {
-                    $this->message = 'La empresa no existe';
+            case 'info':
+                $this->checkAuthorization();
+                $this->mode = 'json';
+                $response = ['status'=>StatusCode::OK, 'places'=>[], 'reports'=>[]];
+                $places = (new PlaceEdit)->readList(['order'=>'id DESC']);
+                foreach ($places as $place) {
+                    $response['places'][] = $place->values;
                 }
-                return $this->ui->render();
+                $reports = (new PlaceReport)->readList(['order'=>'id DESC']);
+                foreach ($reports as $report) {
+                    $response['reports'][] = $report->values;
+                }
+                $comments = (new PlaceComment)->readList(['where'=>'active!="1"', 'order'=>'id DESC']);
+                foreach ($comments as $comment) {
+                    $response['comments'][] = $comment->values;
+                }
+                return json_encode($response);
                 break;
             case 'lugar-editar-borrar':
             case 'lugar-editar-publicar':
             case 'lugar-editar-publicar-promocionar':
-                $placeEdit = (new PlaceEdit)->readCoded($this->id);
-                $this->activateJS();
-                $this->head .= '<meta name="robots" content="noindex,nofollow"/>';
-                $this->layout_page = 'empty';
+                $this->checkAuthorization();
+                $this->mode = 'json';
+                $placeEdit = (new PlaceEdit)->read($this->id);
+                $response = ['status'=>StatusCode::NOK];
                 if ($placeEdit->id() != '') {
                     switch ($this->action) {
                         case 'lugar-editar-borrar':
-                            $this->message = 'La empresa ha sido borrada.';
                             $placeEdit->delete();
+                            $response = ['status'=>StatusCode::OK];
                             break;
                         case 'lugar-editar-publicar':
                         case 'lugar-editar-publicar-promocionar':
-                            $placeEdit->loadTags();
-                            $place = (new Place)->read($placeEdit->get('idPlace'));
+                            $placeEdit->loadCategories();
                             $values = $placeEdit->values;
-                            $values['image'] = $placeEdit->getImageUrl('image', 'huge');
-                            $values['imageBackground'] = $placeEdit->getImageUrl('imageBackground', 'huge');
-                            $values['idTag'] = $placeEdit->tags->showList(['function' => 'Simple']);
-                            $place->insert($values);
-                            $place = (new Place)->read($place->id());
-                            $place->sendEmail($place->get('email_editor'), 'publishedPlace');
-                            if ($this->action == 'lugar-editar-publicar-promocionar') {
-                                $place->modifySimple('promoted', '1');
+                            $values['image'] = $placeEdit->getImageUrl('image', 'web');
+                            $place = new Place($values);
+                            $persist = $place->persist();
+                            if ($persist['status']==StatusCode::OK) {
+                                foreach ($placeEdit->categories->list as $category) {
+                                    $placeCategory = new PlaceCategory([
+                                            'id_place' => $place->id(),
+                                            'id_category' => $category->id(),
+                                        ]);
+                                    $placeCategory->persist();
+                                }
+                                $place->sendEmail($placeEdit->get('email_editor'), 'published_place');
+                                if ($this->action == 'lugar-editar-publicar-promocionar') {
+                                    $place->persistSimple('promoted', '1');
+                                }
+                                $placeEdit->persistSimple('published', '1');
+                                $response = ['status'=>StatusCode::OK];
                             }
-                            $placeEdit->delete();
-                            $this->message = 'La empresa ha sido publicada en ' . $place->link();
                             break;
                     }
-                } else {
-                    $this->message = 'La empresa no existe';
                 }
-                return $this->ui->render();
+                return json_encode($response);
                 break;
+            case 'reporte-ignorar':
+            case 'reporte-borrar':
+                $this->checkAuthorization();
+                $this->mode = 'json';
+                $placeReport = (new PlaceReport)->read($this->id);
+                $response = ['status'=>StatusCode::NOK];
+                if ($placeReport->id() != '') {
+                    if ($this->action == 'reporte-borrar') {
+                        $place = (new Place)->read($placeReport->get('id_place'));
+                        $place->delete();
+                    }
+                    $placeReport->delete();
+                    $response = ['status'=>StatusCode::OK];
+                }
+                return json_encode($response);
+                break;
+            case 'comentario-borrar':
+            case 'comentario-publicar':
+                $this->checkAuthorization();
+                $this->mode = 'json';
+                $placeComment = (new PlaceComment)->read($this->id);
+                $response = ['status'=>StatusCode::NOK];
+                if ($placeComment->id() != '') {
+                    if ($this->action == 'comentario-borrar') {
+                        $placeComment->delete();
+                    }
+                    if ($this->action == 'comentario-publicar') {
+                        $placeComment->persistSimple('active', '1');
+                    }
+                    $response = ['status'=>StatusCode::OK];
+                }
+                return json_encode($response);
+                break;
+
+            // Cache
             case 'cache_all':
+                $response = ['status'=>StatusCode::NOK];
                 if ($this->checkAuthorization()) {
                     Cache::cacheAll();
-                    echo 1;
+                    $response = ['status'=>StatusCode::OK];
                 }
+                return json_encode($response);
                 break;
+
         }
     }
 

@@ -33,11 +33,6 @@ class PlaceEdit extends Db_Object
         return md5('plasticwebs_placeedit_' . $id);
     }
 
-    public static function readCoded($code)
-    {
-        return (new PlaceEdit)->readFirst(['where' => 'MD5(CONCAT("plasticwebs_placeedit_",idPlaceEdit))=:code'], ['code' => $code]);
-    }
-
     public function saveCategories($values)
     {
         $this->saveCategory($values['id_category_1']);
@@ -57,7 +52,7 @@ class PlaceEdit extends Db_Object
         }
     }
 
-    public function saveOrder()
+    public function saveOrder($redirect = 'modificar-gracias')
     {
         if ($this->get('promoted')) {
             $order = new Order([
@@ -73,7 +68,7 @@ class PlaceEdit extends Db_Object
             exit();
         } else {
             $this->sendEmail($this->get('email_editor'), 'welcome_place_free');
-            header('Location: ' . url('modificar-gracias'));
+            header('Location: ' . url($redirect));
             exit();
         }
     }
