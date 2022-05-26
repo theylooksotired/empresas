@@ -155,7 +155,6 @@
             <autoCompleteObject>Tag</autoCompleteObject>
             <autoCompleteAttribute>name</autoCompleteAttribute>
             <onDelete>cascade</onDelete>
-            <required>true</required>
         </attribute>
         <attribute>
             <name>categories</name>

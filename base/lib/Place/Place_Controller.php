@@ -30,12 +30,12 @@ class Place_Controller extends Controller
                 $query = '
                     SELECT p.id, p.title, COUNT(pt.id_tag) as counttags FROM '.(new Place)->tableName.' p
                     LEFT JOIN '.(new PlaceTag)->tableName.' pt ON p.id=pt.id_place
-                    GROUP BY pt.id
+                    GROUP BY p.id
                     HAVING counttags = 0';
                 $list = new ListObjects('Place', ['query'=>$query]);
                 $this->content = '
                 	<div class="list_items reload_list_items list_items">
-		                ' . $list->showListPager(['function' => 'Admin', 'message' => '<div class="message">' . __('no_items') . '</div>']) . '
+		                ' . $list->showList(['function' => 'Admin', 'message' => '<div class="message">' . __('no_items') . '</div>']) . '
 		            </div>';
 		        $this->title_page = __('no_tags');
 		        return $this->ui->render();
