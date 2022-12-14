@@ -217,6 +217,7 @@ class Post_Ui extends Ui
             'author' => [
                 '@type' => 'Organization',
                 'name' => Parameter::code('meta_title_page'),
+                'url' => url(),
             ],
             'publisher' => [
                 '@type' => 'Organization',
