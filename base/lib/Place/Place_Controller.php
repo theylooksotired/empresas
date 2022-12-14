@@ -26,38 +26,38 @@ class Place_Controller extends Controller
             default:
                 return parent::getContent();
                 break;
-			case 'no_tags':
+            case 'no_tags':
                 $query = '
-                    SELECT p.id, p.title, COUNT(pt.id_tag) as counttags FROM '.(new Place)->tableName.' p
-                    LEFT JOIN '.(new PlaceTag)->tableName.' pt ON p.id=pt.id_place
+                    SELECT p.id, p.title, COUNT(pt.id_tag) as counttags FROM ' . (new Place)->tableName . ' p
+                    LEFT JOIN ' . (new PlaceTag)->tableName . ' pt ON p.id=pt.id_place
                     GROUP BY p.id
                     HAVING counttags = 0';
-                $list = new ListObjects('Place', ['query'=>$query]);
+                $list = new ListObjects('Place', ['query' => $query]);
                 $this->content = '
-                	<div class="list_items reload_list_items list_items">
-		                ' . $list->showList(['function' => 'Admin', 'message' => '<div class="message">' . __('no_items') . '</div>']) . '
-		            </div>';
-		        $this->title_page = __('no_tags');
-		        return $this->ui->render();
+                    <div class="list_items reload_list_items list_items">
+                        ' . $list->showList(['function' => 'Admin', 'message' => '<div class="message">' . __('no_items') . '</div>']) . '
+                    </div>';
+                $this->title_page = __('no_tags');
+                return $this->ui->render();
                 break;
             case 'clean_tags':
-                $placesIds = Db::returnAllColumn('SELECT p.id, p.title, COUNT(pt.id_tag) FROM '.(new Place)->tableName.' p JOIN '.(new PlaceTag)->tableName.' pt ON p.id=pt.id_place GROUP BY p.id HAVING COUNT(pt.id_tag) > 5 ORDER BY COUNT(pt.id_tag) DESC');
+                $placesIds = Db::returnAllColumn('SELECT p.id, p.title, COUNT(pt.id_tag) FROM ' . (new Place)->tableName . ' p JOIN ' . (new PlaceTag)->tableName . ' pt ON p.id=pt.id_place GROUP BY p.id HAVING COUNT(pt.id_tag) > 5 ORDER BY COUNT(pt.id_tag) DESC');
                 foreach ($placesIds as $placesId) {
-                    $tags = Db::returnAllColumn('SELECT pt.id FROM '.(new PlaceTag)->tableName.' pt JOIN '.(new Place)->tableName.' p ON p.id=pt.id_place AND pt.id_place="'.$placesId.'"');
-                    Db::execute('DELETE FROM '.(new PlaceTag)->tableName.' WHERE id IN ('.implode(',', array_slice($tags, 5)).')');
+                    $tags = Db::returnAllColumn('SELECT pt.id FROM ' . (new PlaceTag)->tableName . ' pt JOIN ' . (new Place)->tableName . ' p ON p.id=pt.id_place AND pt.id_place="' . $placesId . '"');
+                    Db::execute('DELETE FROM ' . (new PlaceTag)->tableName . ' WHERE id IN (' . implode(',', array_slice($tags, 5)) . ')');
                 }
                 echo 1;
                 exit();
-            break;
+                break;
             case 'clean_categories':
-                $placesIds = Db::returnAllColumn('SELECT p.id, p.title, COUNT(pt.id_category) FROM '.(new Place)->tableName.' p JOIN '.(new PlaceCategory)->tableName.' pt ON p.id=pt.id_place GROUP BY p.id HAVING COUNT(pt.id_category) > 5 ORDER BY COUNT(pt.id_category) DESC');
+                $placesIds = Db::returnAllColumn('SELECT p.id, p.title, COUNT(pt.id_category) FROM ' . (new Place)->tableName . ' p JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place GROUP BY p.id HAVING COUNT(pt.id_category) > 5 ORDER BY COUNT(pt.id_category) DESC');
                 foreach ($placesIds as $placesId) {
-                    $categories = Db::returnAllColumn('SELECT pt.id FROM '.(new PlaceCategory)->tableName.' pt JOIN '.(new Place)->tableName.' p ON p.id=pt.id_place AND pt.id_place="'.$placesId.'"');
-                    Db::execute('DELETE FROM '.(new PlaceCategory)->tableName.' WHERE id IN ('.implode(',', array_slice($categories, 5)).')');
+                    $categories = Db::returnAllColumn('SELECT pt.id FROM ' . (new PlaceCategory)->tableName . ' pt JOIN ' . (new Place)->tableName . ' p ON p.id=pt.id_place AND pt.id_place="' . $placesId . '"');
+                    Db::execute('DELETE FROM ' . (new PlaceCategory)->tableName . ' WHERE id IN (' . implode(',', array_slice($categories, 5)) . ')');
                 }
                 echo 1;
                 exit();
-            break;
+                break;
         }
     }
 

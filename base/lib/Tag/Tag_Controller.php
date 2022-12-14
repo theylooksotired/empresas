@@ -54,6 +54,22 @@ class Tag_Controller extends Controller
                 echo 1;
                 exit();
                 break;
+            case 'clean_doubles_name':
+                $query = 'SELECT name, COUNT(name) FROM ' . (new Tag)->tableName . ' t GROUP BY name HAVING COUNT(name) > 1';
+                foreach (Db::returnAllColumn($query) as $nameTag) {
+                    echo $nameTag . '<br/>';
+                    $tags = (new Tag)->readList(['where' => 'name=:name'], ['name' => $nameTag]);
+                    $tagMain = $tags[0];
+                    foreach ($tags as $tag) {
+                        Db::execute('UPDATE ' . (new PlaceTag)->tableName . ' SET id_tag="' . $tagMain->id() . '" WHERE id_tag="' . $tag->id() . '"');
+                        if ($tag->id() != $tagMain->id()) {
+                            Db::execute('DELETE FROM ' . (new Tag)->tableName . ' WHERE id="' . $tag->id() . '"');
+                        }
+                    }
+                }
+                echo 1;
+                exit();
+                break;
             case 'clean_categories':
                 foreach ((new Tag)->readList(['order' => 'name']) as $item) {
                     $category = new Category();

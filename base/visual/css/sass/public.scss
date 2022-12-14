@@ -1688,51 +1688,6 @@ body {
 	}
 }
 
-.actions {
-	padding: 20px 0;
-	@include clearer();
-	.action {
-		width: 30%;
-		float: left;
-		padding: 0 10px 0 0;
-		@include borderBox();
-		&:last-child {
-			padding: 0;
-		}
-		a {
-			display: block;
-			padding: 15px 10px;
-			text-align: center;
-			color: $white;
-			text-transform: uppercase;
-			font-size: $fontSizeSmall;
-			vertical-align: middle;
-			background: lighten($black, 50%);
-			border: 1px solid lighten($black, 45%);
-			@include borderRadius(3px);
-			&:hover {
-				background: lighten($black, 40%);
-			}
-			i {
-				display: inline-block;
-				font-size: $fontSizeBig;
-				vertical-align: middle;
-				padding: 0 10px 0 0;
-			}
-		}
-		&.action-update {
-			width: 40%;
-			a {
-				background: $colorAccept;
-				border: 1px solid darken($colorAccept, 10%);
-				&:hover {
-					background: darken($colorAccept, 10%);
-				}
-			}
-		}
-	}
-}
-
 .actions_place {
 	margin: 20px 0;
 	font-size: $fontSizeSmall;
@@ -2025,87 +1980,6 @@ body {
 	}
 }
 
-.promotion_info {
-	background: $white;
-	padding: 40px 0 0 0;
-	table {
-		max-width: $sizeDesktop;
-		margin: auto;
-		table-layout: fixed;
-		td {
-			border: 0;
-			padding: 20px 40px;
-			margin: 0;
-			background: lighten($colorText, 75%);
-			border-bottom: 5px solid $white;
-			text-align: center;
-			img {
-				padding: 40px 10px;
-				@include borderBox();
-			}
-			&:nth-child(2) {
-				background: lighten($colorMainAlt, 30%);
-				border-left: 5px solid $white;
-			}
-		}
-		tr {
-			&:nth-child(1) {
-				td {
-					background: lighten($colorText, 20%);
-					vertical-align: middle;
-					padding: 10px;
-					&:nth-child(2) {
-						background: darken($colorMainAlt, 5%);
-						h2 {
-							font-size: $fontSizeHuge;
-							text-shadow: 1px 1px 4px rgba($black, 0.5);
-							text-transform: normal;
-							span {
-								font-size: $fontSizeBig;
-								letter-spacing: -1px;
-							}
-							em {
-								font-size: $fontSizeNormal;
-								display: inline-block;
-								font-weight: normal;
-							}
-						}
-					}
-					h2 {
-						text-transform: uppercase;
-						color: $white;
-						padding: 15px 0;
-						margin: 0;
-					}
-				}
-			}
-		}
-	}
-}
-
-.promotion_pay_bottom {
-	max-width: $sizeDesktop;
-	margin: auto;
-	.promotion_pay_bottom_ins {
-		padding-left: calc(50% + 3px);
-		form {
-			border: 0;
-			background: lighten($colorMainAlt, 30%);
-		}
-		.promotion_pay_bottom_title {
-			font-weight: bold;
-			text-transform: uppercase;
-			letter-spacing: -1px;
-			padding: 10px 0;
-			font-size: $fontSizeBig;
-			color: $white;
-			background: $colorAccent;
-			text-align: center;
-		}
-	}
-	@include borderBox();
-}
-
 .share_options {
 	padding: 20px 0 0 0 ;
 	text-align: right;
@@ -2200,14 +2074,6 @@ body {
 	}
 }
 
-.map {
-    width: 100%;
-    height: 300px;
-    .mapIns {
-        height: 300px;
-    }
-}
-
 .item_info {
 	padding: 20px;
 	background: darken($white, 2%);
@@ -2222,26 +2088,6 @@ body {
 		display: block;
 		color: darken($white, 30%);
 		font-size: $fontSizeTiny;
-	}
-}
-
-.button_publish {
-	text-align: center;
-	font-size: $fontSizeTiny;
-	a {
-		display: block;
-		max-width: 200px;
-		padding: 15px 20px;
-		color: $white;
-		background: $colorMain;
-		font-size: $fontSizeNormal;
-		font-weight: bold;
-		margin: 100px auto 5px auto;
-		text-transform: uppercase;
-		@include borderRadius(3px);
-		&:hover {
-			background: darken($colorMain, 10%);
-		}
 	}
 }
 
@@ -2301,98 +2147,6 @@ body {
 		i {
 			padding: 0 0 0 5px;
 		}
-	}
-}
-
-.promotion {
-	margin: auto;
-	padding: 140px 0 0 0;
-	position: relative;
-	&:before {	
-		position: absolute;
-		top: -20px;
-		left: 0;
-		right: 0;
-		height: 130px;
-		background-color: $white;
-		background-image: url(../../img/directorio_bg_small.png);
-		background-position: center center;
-		background-repeat: no-repeat;
-		background-size: cover;
-		content: '';
-	}
-	.promotion_ins {
-		max-width: $sizeDesktop;
-		margin: auto;
-		max-width: $sizeTablet;
-		background: rgba($white, 0.8);
-		border: 1px solid rgba($black, 0.05);
-		padding: 30px;
-		box-sizing: content-box;
-		position: relative;
-		z-index: 2;
-		h1 {
-			font-size: $fontSizeHuge * 6 / 10;
-			letter-spacing: -1px;
-			padding: 0 0 30px;
-			margin: 0 0 30px;
-			color: $colorAccept;
-			position: relative;
-			text-align: center;
-			span {
-				display: block;
-				padding: 5px 0 0 0;
-				color: lighten($colorAccept, 5%);
-				em {
-					display: inline;
-					color: lighten($colorAccept, 10%);
-				}
-			}
-			&:before,
-			&:after {
-				display: none;
-			}
-		}
-		h2 {
-			font-size: $fontSizeHuge * 5 / 10;
-			letter-spacing: -1px;
-			padding: 0 0 30px;
-			margin: 0;
-			color: $colorAccentAlt;
-			font-weight: normal;
-			text-align: center;
-		}
-		ul {
-			margin: 20px 0;
-			li {
-				display: block;
-				margin: 0 20px;
-				padding: 0 0 20px 40px;
-				list-style: none;
-				position: relative;
-				font-size: $fontSizeBig * 8 / 10;
-				&:before {
-					content: "\e903";
-					font-family: 'icomoon';
-					color: $colorAccept;
-					font-size: 20px;
-					position: absolute;
-					top: 0;
-					left: 0;
-				}
-			}
-			&.secondary {
-				li {
-					&:before {
-						color: $colorAccentAlt;
-					}
-				}
-			}
-		}
-	}
-	.form_fields_promotion_link {
-		text-align: center;
-		padding: 20px 0 50px 0;
 	}
 }
 
