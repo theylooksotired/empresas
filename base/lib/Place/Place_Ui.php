@@ -237,16 +237,18 @@ class Place_Ui extends Ui
             $value = $this->renderTelephone($value, true);
         }
         if ($attribute == 'email') {
-            $value = '<a href="mailto:' . $value . '" target="_blank">' . $value . '</a>';
+            if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                $value = '<a href="mailto:' . $value . '" target="_blank">' . $value . '</a>';
+            }
         }
         if ($attribute == 'web') {
             $value = '<a href="' . Url::format($value) . '" target="_blank">' . Url::format($value) . '</a>';
         }
         if ($attribute == 'whatsapp') {
-        	$value = $this->renderTelephone($value, false);
+            $value = $this->renderTelephone($value, false);
             $value = '<a href="https://api.whatsapp.com/send?phone=' . urlencode($value) . '" target="_blank">' . $value . '</a>';
         }
-        return ($this->object->get($attribute) != '') ? '
+        return ($this->object->get($attribute) != '' && $value != '') ? '
 			<div class="info_block">
 				<i class="icon icon-' . $attribute . '"></i>
 				<div class="info_block_ins">
@@ -275,7 +277,7 @@ class Place_Ui extends Ui
         $url = Url::format($value);
         return ($this->object->get($attribute) != '') ? '
 			<div class="info_block_icon">
-				<a href="' . $url . '" class="info_block_icon_ins" target="_blank">
+				<a href="' . $url . '" class="info_block_icon_ins" target="_blank" rel=”nofollow”>
 					<i class="icon icon-' . $attribute . '"></i>
 					<span>' . $label . '</span>
 				</a>
