@@ -212,12 +212,11 @@ class Post_Ui extends Ui
             '@context' => 'http://schema.org/',
             '@type' => 'Article',
             'headline' => $this->object->getBasicInfo(),
-            'mainEntityOfPage' => $this->object->url(),
             'image' => $this->object->getImageUrl('image', 'web'),
             'author' => [
                 '@type' => 'Organization',
                 'name' => Parameter::code('meta_title_page'),
-                'url' => url(),
+                'url' => url(''),
             ],
             'publisher' => [
                 '@type' => 'Organization',
