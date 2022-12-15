@@ -221,6 +221,11 @@ class Post_Ui extends Ui
                 'name' => Parameter::code('meta_title_page'),
                 'url' => url(''),
             ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => Parameter::code('meta_title_page'),
+                'logo' => Parameter::code('meta_image'),
+            ],
             'datePublished' => $this->object->get('publish_date'),
             'dateModified' => $this->object->get('publish_date'),
         ];
