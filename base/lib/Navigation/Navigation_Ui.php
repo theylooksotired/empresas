@@ -302,7 +302,7 @@ class Navigation_Ui extends Ui
         if (isset($this->object->bread_crumbs) && is_array($this->object->bread_crumbs)) {
             $html .= '
                 <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                    <a href="' . url('') . '" itemprop="item"><span itemprop="name">' . __('home') . '</span></a>
+                    <a href="' . url('') . '" itemprop="item"><span itemprop="name">Inicio</span></a>
                     <meta itemprop="position" content="1" />
                 </span> &raquo;';
             $i = 2;
