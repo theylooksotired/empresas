@@ -296,10 +296,15 @@ class Navigation_Controller extends Controller
                     $this->head = '
                         ' . $post->showUi('JsonHeader') . '
                         ' . $this->ampFacebookCommentsHeader();
+                    $this->bread_crumbs = [
+                        url('articulos') => 'Artículos',
+                        $post->url() => $post->getBasicInfo(),
+                    ];
                     $this->content = $post->showUi('Complete');
                 } else {
                     $this->title_page = 'Artículos';
                     $items = new ListObjects('Post', ['where' => 'publish_date<=NOW() AND active="1"', 'order' => 'publish_date DESC', 'results' => '10']);
+                    $this->bread_crumbs = [url('articulos') => 'Artículos'];
                     $this->content = '<div class="posts">' . $items->showListPager(['showResults' => false]) . '</div>';
                 }
                 return $this->ui->render();
@@ -529,8 +534,8 @@ class Navigation_Controller extends Controller
                 break;
 
             /**
-             * PRIVATE ADMIN
-             */
+                 * PRIVATE ADMIN
+                 */
             case 'lugar-imagen-temporal':
                 $this->mode = 'json';
                 $response = File::uploadTempImage($this->values);
@@ -539,16 +544,16 @@ class Navigation_Controller extends Controller
             case 'info':
                 $this->checkAuthorization();
                 $this->mode = 'json';
-                $response = ['status'=>StatusCode::OK, 'places'=>[], 'reports'=>[]];
-                $places = (new PlaceEdit)->readList(['where'=>'published!="1" OR published IS NULL', 'order'=>'id DESC']);
+                $response = ['status' => StatusCode::OK, 'places' => [], 'reports' => []];
+                $places = (new PlaceEdit)->readList(['where' => 'published!="1" OR published IS NULL', 'order' => 'id DESC']);
                 foreach ($places as $place) {
                     $response['places'][] = $place->values;
                 }
-                $reports = (new PlaceReport)->readList(['order'=>'id DESC']);
+                $reports = (new PlaceReport)->readList(['order' => 'id DESC']);
                 foreach ($reports as $report) {
                     $response['reports'][] = $report->values;
                 }
-                $comments = (new PlaceComment)->readList(['where'=>'active!="1" OR active IS NULL', 'order'=>'id DESC']);
+                $comments = (new PlaceComment)->readList(['where' => 'active!="1" OR active IS NULL', 'order' => 'id DESC']);
                 foreach ($comments as $comment) {
                     $response['comments'][] = $comment->values;
                 }
@@ -560,12 +565,12 @@ class Navigation_Controller extends Controller
                 $this->checkAuthorization();
                 $this->mode = 'json';
                 $placeEdit = (new PlaceEdit)->read($this->id);
-                $response = ['status'=>StatusCode::NOK];
+                $response = ['status' => StatusCode::NOK];
                 if ($placeEdit->id() != '') {
                     switch ($this->action) {
                         case 'lugar-editar-borrar':
                             $placeEdit->delete();
-                            $response = ['status'=>StatusCode::OK];
+                            $response = ['status' => StatusCode::OK];
                             break;
                         case 'lugar-editar-publicar':
                         case 'lugar-editar-publicar-promocionar':
@@ -575,12 +580,12 @@ class Navigation_Controller extends Controller
                             $values['image'] = $placeEdit->getImageUrl('image', 'web');
                             $place = new Place($values);
                             $persist = $place->persist();
-                            if ($persist['status']==StatusCode::OK) {
+                            if ($persist['status'] == StatusCode::OK) {
                                 foreach ($placeEdit->categories->list as $category) {
                                     $placeCategory = new PlaceCategory([
-                                            'id_place' => $place->id(),
-                                            'id_category' => $category->id(),
-                                        ]);
+                                        'id_place' => $place->id(),
+                                        'id_category' => $category->id(),
+                                    ]);
                                     $placeCategory->persist();
                                 }
                                 $place->sendEmail($placeEdit->get('email_editor'), 'published_place');
@@ -588,7 +593,7 @@ class Navigation_Controller extends Controller
                                     $place->persistSimple('promoted', '1');
                                 }
                                 $placeEdit->persistSimple('published', '1');
-                                $response = ['status'=>StatusCode::OK];
+                                $response = ['status' => StatusCode::OK];
                             }
                             break;
                     }
@@ -600,14 +605,14 @@ class Navigation_Controller extends Controller
                 $this->checkAuthorization();
                 $this->mode = 'json';
                 $placeReport = (new PlaceReport)->read($this->id);
-                $response = ['status'=>StatusCode::NOK];
+                $response = ['status' => StatusCode::NOK];
                 if ($placeReport->id() != '') {
                     if ($this->action == 'reporte-borrar') {
                         $place = (new Place)->read($placeReport->get('id_place'));
                         $place->delete();
                     }
                     $placeReport->delete();
-                    $response = ['status'=>StatusCode::OK];
+                    $response = ['status' => StatusCode::OK];
                 }
                 return json_encode($response);
                 break;
@@ -616,7 +621,7 @@ class Navigation_Controller extends Controller
                 $this->checkAuthorization();
                 $this->mode = 'json';
                 $placeComment = (new PlaceComment)->read($this->id);
-                $response = ['status'=>StatusCode::NOK];
+                $response = ['status' => StatusCode::NOK];
                 if ($placeComment->id() != '') {
                     if ($this->action == 'comentario-borrar') {
                         $placeComment->delete();
@@ -624,17 +629,17 @@ class Navigation_Controller extends Controller
                     if ($this->action == 'comentario-publicar') {
                         $placeComment->persistSimple('active', '1');
                     }
-                    $response = ['status'=>StatusCode::OK];
+                    $response = ['status' => StatusCode::OK];
                 }
                 return json_encode($response);
                 break;
 
             // Cache
             case 'cache_all':
-                $response = ['status'=>StatusCode::NOK];
+                $response = ['status' => StatusCode::NOK];
                 if ($this->checkAuthorization()) {
                     Cache::cacheAll();
-                    $response = ['status'=>StatusCode::OK];
+                    $response = ['status' => StatusCode::OK];
                 }
                 return json_encode($response);
                 break;

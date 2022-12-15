@@ -83,6 +83,7 @@ class Post_Ui extends Ui
                     </div>
                     <div class="post_short_info_right">' . $share . '</div>
                 </div>
+                <div class="post_image">' . $this->object->getImageAmp('image', 'web') . '</div>
                 <div class="editorial">' . $this->object->get('description') . '</div>
             </div>
             <div class="item_complete_share">
