@@ -210,10 +210,14 @@ class Post_Ui extends Ui
     public function renderJsonHeader()
     {
         $info = [
-            '@context' => 'http://schema.org/',
+            '@context' => 'http://schema.org',
             '@type' => 'Article',
             'headline' => $this->object->getBasicInfo(),
-            'image' => $this->object->getImageUrl('image', 'web'),
+            'image' => [
+                $this->object->getImageUrl('image', 'huge'),
+                $this->object->getImageUrl('image', 'web'),
+                $this->object->getImageUrl('image', 'small'),
+            ],
             'author' => [
                 '@type' => 'Organization',
                 'name' => Parameter::code('meta_title_page'),
@@ -226,7 +230,6 @@ class Post_Ui extends Ui
             ],
             'datePublished' => $this->object->get('publish_date'),
             'dateModified' => $this->object->get('publish_date'),
-            'articleBody' => strip_tags($this->object->get('description')),
         ];
         return '<script type="application/ld+json">' . json_encode($info) . '</script>';
     }
