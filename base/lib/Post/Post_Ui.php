@@ -214,7 +214,6 @@ class Post_Ui extends Ui
             '@type' => 'Article',
             'headline' => $this->object->getBasicInfo(),
             'image' => [
-                $this->object->getImageUrl('image', 'huge'),
                 $this->object->getImageUrl('image', 'web'),
                 $this->object->getImageUrl('image', 'small'),
             ],
