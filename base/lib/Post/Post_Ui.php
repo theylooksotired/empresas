@@ -73,7 +73,7 @@ class Post_Ui extends Ui
         foreach ($this->object->get('tags') as $tag) {
             $tags .= $tag->link() . ' ';
         }
-        $share = $this->share(['share'=>[['key'=>'facebook', 'icon'=>'<i class="icon icon-facebook"></i>'], ['key'=>'twitter', 'icon'=>'<i class="icon icon-twitter"></i>']]]);
+        $share = $this->share(['share' => [['key' => 'facebook', 'icon' => '<i class="icon icon-facebook"></i>'], ['key' => 'twitter', 'icon' => '<i class="icon icon-twitter"></i>']]]);
         return '
             <div class="post_complete">
                 <div class="post_short_description">' . nl2br($this->object->get('short_description')) . '</div>
@@ -209,14 +209,13 @@ class Post_Ui extends Ui
 
     public function renderJsonHeader()
     {
+        $image = $this->object->getImageUrl('image', 'huge');
+        $image = ($image == '') ? $this->object->getImageUrl('image', 'web') : $image;
         $info = [
             '@context' => 'http://schema.org',
             '@type' => 'Article',
             'headline' => $this->object->getBasicInfo(),
-            'image' => [
-                $this->object->getImageUrl('image', 'web'),
-                $this->object->getImageUrl('image', 'small'),
-            ],
+            'image' => $image,
             'author' => [
                 '@type' => 'Organization',
                 'name' => Parameter::code('meta_title_page'),
