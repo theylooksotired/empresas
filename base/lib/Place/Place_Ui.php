@@ -348,17 +348,20 @@ class Place_Ui extends Ui
         return '
         	<div class="related">
 				<h3 class="title">Empresas similares</h3>
-				' . $items->showList() . '
+				' . $items->showList(['middle' => Adsense::ampInline(), 'middleRepetitions' => 2]) . '
 			</div>';
     }
 
     public static function introPlaces()
     {
-        $items = new ListObjects('Place', ['where' => 'promoted = 1']);
+        $items = new ListObjects('Place', ['where' => 'promoted = 1', 'order' => 'RAND()', 'limit' => 10]);
+        if ($items->isEmpty()) {
+            $items = new ListObjects('Place', ['order' => 'RAND()', 'limit' => 10]);
+        }
         return '
         	<div class="intro_places">
 				<h3>Algunas de las empresas en nuestro directorio</h3>
-				' . $items->showList() . '
+				' . $items->showList(['middle' => Adsense::ampInline(), 'middleRepetitions' => 2]) . '
 			</div>';
     }
 

@@ -109,7 +109,6 @@ body {
 }
 
 .footer {
-	font-size: $fontSizeSmall;
 	background: $colorText;
 	color: $white;
 	@include clearer();
@@ -173,6 +172,7 @@ body {
 			width: 50%;
 			float: left;
 			padding: 5px 0;
+			margin: 0 0 5px;
 			color: rgba($white, 0.5);
 			@include textEllipsis();
 			&:hover {
@@ -947,17 +947,21 @@ body {
 		}
 		.city_links_items {
 			a {
-				color: darken($white, 60%);
 				font-weight: normal;
 				display: inline-block;
 				padding: 5px 10px;
 				margin: 0 3px 6px 0;
+				color: darken($white, 60%);
 				background: rgba($black, 0.05);
 				@include animate();
 				@include borderRadius(3px);
 				&:hover {
 					background: $colorMainAlt;
 					color: $white;
+				}
+				&.city_link_important {
+					color: darken($white, 75%);
+					background: rgba($black, 0.07);
 				}
 			}
 		}
@@ -1611,9 +1615,9 @@ body {
 		margin: 0;
 		color: darken($white, 70%);
 		font-weight: normal;
-		font-size: $fontSizeTiny;
-		padding: 4px 5px;
-		margin: 3px;
+		font-size: $fontSizeSmall;
+		padding: 5px 10px;
+		margin: 5px;
 		@include borderRadius(3px);
 		&:hover {
 			background: $colorAccentAlt;

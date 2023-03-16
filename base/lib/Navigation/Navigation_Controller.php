@@ -71,7 +71,6 @@ class Navigation_Controller extends Controller
                                 </div>
                             </div>
                             <div class="intro_page_right">
-                                ' . Adsense::ampInline() . '
                                 ' . $this->ui->contentSide() . '
                             </div>
                         </div>
@@ -204,26 +203,40 @@ class Navigation_Controller extends Controller
             case 'categoria':
                 $this->mode = 'amp';
                 $page = (isset($_GET['pagina']) && $_GET['pagina'] != '') ? ' - Página ' . (intval($_GET['pagina'])) : '';
+                $pageUrl = (isset($_GET['pagina']) && $_GET['pagina'] != '') ? '?pagina=' . (intval($_GET['pagina'])) : '';
                 $info = explode('-', $this->id);
                 $item = (new Category)->read($info[0]);
                 if ($item->id() != '') {
                     if ($this->extraId != '') {
-                        $city = (new Place)->readFirst(['where' => 'city_url=:city_url'], ['city_url' => $this->extraId]);
-                        $this->title_page = $item->getBasicInfo() . ' en ' . $city->get('city') . ', ' . Parameter::code('country') . $page;
-                        $this->title_page_html = '<span>' . $city->get('city') . ', ' . Parameter::code('country') . '</span> ' . $item->getBasicInfo();
-                        $query = 'SELECT p.* FROM ' . (new Place)->tableName . ' p
-                                JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place
-                                WHERE pt.id_category="' . $item->id() . '"
-                                AND p.city_url="' . $this->extraId . '"
-                                ORDER BY p.promoted DESC, p.title_url';
-                        $queryCount = 'SELECT COUNT(p.id) as count_results FROM ' . (new Place)->tableName . ' p
-                                        JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place
-                                        WHERE pt.id_category="' . $item->id() . '"
-                                        AND p.city_url="' . $this->extraId . '"';
-                        $this->bread_crumbs = [$item->url() => $item->getBasicInfo(), $item->url() . '/' . $city->get('city_url') => $city->get('city')];
+                        if ($this->extraId == 'ciudades') {
+                            $this->layout_page = 'clean';
+                            $this->title_page = 'Información sobre ' . $item->getBasicInfo() . ' en ' . Parameter::code('country');
+                            $this->meta_description = 'Encuentra ' . $item->getBasicInfo() . ' en las diferentes ciudades de ' . Parameter::code('country');
+                            $this->meta_url = url($this->action . '/' . $this->id . '/' . $this->extraId);
+                            $this->content = $item->showUi('CitiesComplete');
+                            return $this->ui->render();
+                        } else {
+                            $city = (new Place)->readFirst(['where' => 'city_url=:city_url'], ['city_url' => $this->extraId]);
+                            $this->title_page = $item->getBasicInfo() . ' en ' . $city->get('city') . ', ' . Parameter::code('country') . $page;
+                            $this->title_page_html = '<span>' . $city->get('city') . ', ' . Parameter::code('country') . '</span> ' . $item->getBasicInfo();
+                            $this->meta_description = 'En esta página tenemos un listado completo de teléfonos y direcciones sobre ' . $item->getBasicInfo() . ' en la ciudad de ' . $city->get('city') . ' de ' . Parameter::code('country');
+                            $this->meta_url = url($this->action . '/' . $this->id . '/' . $this->extraId) . $pageUrl;
+                            $query = 'SELECT p.* FROM ' . (new Place)->tableName . ' p
+                                    JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place
+                                    WHERE pt.id_category="' . $item->id() . '"
+                                    AND p.city_url="' . $this->extraId . '"
+                                    ORDER BY p.promoted DESC, p.title_url';
+                            $queryCount = 'SELECT COUNT(p.id) as count_results FROM ' . (new Place)->tableName . ' p
+                                            JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place
+                                            WHERE pt.id_category="' . $item->id() . '"
+                                            AND p.city_url="' . $this->extraId . '"';
+                            $this->bread_crumbs = [$item->url() => $item->getBasicInfo(), $item->url() . '/' . $city->get('city_url') => $city->get('city')];
+                        }
                     } else {
                         $this->title_page = 'Teléfonos y direcciones en ' . Parameter::code('country') . ' sobre ' . strtolower($item->getBasicInfo()) . $page;
+                        $this->meta_description = 'En esta página tenemos un listado completo de teléfonos y direcciones sobre ' . $item->getBasicInfo() . ' en ' . Parameter::code('country');
                         $this->title_page_html = '<span>Teléfonos y direcciones en ' . Parameter::code('country') . ' sobre</span> ' . $item->getBasicInfo();
+                        $this->meta_url = url($this->action . '/' . $this->id) . $pageUrl;
                         $query = 'SELECT p.* FROM ' . (new Place)->tableName . ' p
                                 JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place
                                 WHERE pt.id_category="' . $item->id() . '"
@@ -240,11 +253,9 @@ class Navigation_Controller extends Controller
                         exit();
                     }
                     $this->head = $items->metaNavigation();
-                    $this->meta_description = $this->title_page;
-                    $this->meta_url = url($this->action . '/' . $this->id);
                     $this->content = '
                         ' . (($this->extraId != '') ? '' : '' . $item->showUi('Cities')) . '
-                        ' . $items->showListPager(['function' => 'Public', 'middle' => Adsense::ampInline(), 'showResults' => false]);
+                        ' . $items->showListPager(['function' => 'Public', 'middle' => Adsense::ampInline(), 'middleRepetitions' => 2, 'showResults' => false]);
                     return $this->ui->render();
                 } else {
                     $this->layout_page = 'clean';

@@ -36,7 +36,6 @@ class Navigation_Ui extends Ui
                             ' . $content . '
                         </div>
                         <div class="content_right">
-                            ' . (($amp) ? Adsense::ampInline() : Adsense::responsive()) . '
                             ' . $this->contentSide() . '
                         </div>
                     </div>
@@ -63,7 +62,6 @@ class Navigation_Ui extends Ui
                             ' . $content . '
                         </div>
                         <div class="content_right">
-                            ' . Adsense::ampInline() . '
                             ' . $this->contentSide() . '
                         </div>
                     </div>
@@ -164,7 +162,7 @@ class Navigation_Ui extends Ui
                 <div class="header_ins">
                     <div class="header_left">
                         <div class="logo">
-                            <a href="' . url('') . '">
+                            <a href="' . url('') . '" title="' . Parameter::code('meta_title_page') . ' ' . Parameter::code('country') . '">
                                 <strong>' . Parameter::code('meta_title_page') . '</strong>
                                 <span>' . Parameter::code('country') . '</span>
                             </a>
@@ -196,20 +194,20 @@ class Navigation_Ui extends Ui
                         <div class="footer_list footer_countries">
                             <div class="footer_title">Otros directorios</div>
                             <div class="footer_list_items">
-                                <a href="http://www.argentina-directorio.com" target="_blank" title="Directorio de empresas de Argentina">Argentina</a>
-                                <a href="http://www.directorio.com.bo" target="_blank" title="Directorio de empresas de Bolivia">Bolivia</a>
-                                <a href="http://www.directorio-chile.com" target="_blank" title="Directorio de empresas de Chile">Chile</a>
-                                <a href="http://www.colombia-directorio.com" target="_blank" title="Directorio de empresas de Colombia">Colombia</a>
-                                <a href="http://www.ecuador-directorio.com" target="_blank" title="Directorio de empresas de Ecuador">Ecuador</a>
-                                <a href="http://www.directorio-guatemala.com" target="_blank" title="Directorio de empresas de Guatemala">Guatemala</a>
-                                <a href="http://www.directorio-honduras.com" target="_blank" title="Directorio de empresas de Honduras">Honduras</a>
-                                <a href="http://www.mexico-directorio.com" target="_blank" title="Directorio de empresas de México">México</a>
-                                <a href="http://www.directorio-panama.com" target="_blank" title="Directorio de empresas de Panamá">Panamá</a>
-                                <a href="http://www.paraguay-directorio.com" target="_blank" title="Directorio de empresas de Paraguay">Paraguay</a>
-                                <a href="http://www.peru-directorio.com" target="_blank" title="Directorio de empresas de Perú">Perú</a>
-                                <a href="http://www.telefono.do" target="_blank" title="Directorio de empresas de República Dominicana">República Dominicana</a>
-                                <a href="http://www.uruguay-directorio.com" target="_blank" title="Directorio de empresas de Uruguay">Uruguay</a>
-                                <a href="http://www.venezuela-directorio.com" target="_blank" title="Directorio de empresas de Venezuela">Venezuela</a>
+                                <a href="https://www.argentina-directorio.com" rel="nofollow" title="Directorio de empresas de Argentina">Argentina</a>
+                                <a href="https://www.directorio.com.bo" rel="nofollow" title="Directorio de empresas de Bolivia">Bolivia</a>
+                                <a href="https://www.directorio-chile.com" rel="nofollow" title="Directorio de empresas de Chile">Chile</a>
+                                <a href="https://www.colombia-directorio.com" rel="nofollow" title="Directorio de empresas de Colombia">Colombia</a>
+                                <a href="https://www.ecuador-directorio.com" rel="nofollow" title="Directorio de empresas de Ecuador">Ecuador</a>
+                                <a href="https://www.directorio-guatemala.com" rel="nofollow" title="Directorio de empresas de Guatemala">Guatemala</a>
+                                <a href="https://www.directorio-honduras.com" rel="nofollow" title="Directorio de empresas de Honduras">Honduras</a>
+                                <a href="https://www.mexico-directorio.com" rel="nofollow" title="Directorio de empresas de México">México</a>
+                                <a href="https://www.directorio-panama.com" rel="nofollow" title="Directorio de empresas de Panamá">Panamá</a>
+                                <a href="https://www.paraguay-directorio.com" rel="nofollow" title="Directorio de empresas de Paraguay">Paraguay</a>
+                                <a href="https://www.peru-directorio.com" rel="nofollow" title="Directorio de empresas de Perú">Perú</a>
+                                <a href="https://www.telefono.do" rel="nofollow" title="Directorio de empresas de República Dominicana">República Dominicana</a>
+                                <a href="https://www.uruguay-directorio.com" rel="nofollow" title="Directorio de empresas de Uruguay">Uruguay</a>
+                                <a href="https://www.venezuela-directorio.com" rel="nofollow" title="Directorio de empresas de Venezuela">Venezuela</a>
                             </div>
                         </div>
                     </div>
@@ -227,10 +225,13 @@ class Navigation_Ui extends Ui
 
     public function contentSide()
     {
+        $layout_page = (isset($this->object->layout_page)) ? $this->object->layout_page : '';
+        $amp = ($layout_page == 'amp' || (isset($this->object->mode) && $this->object->mode == 'amp')) ? true : false;
         $place = new Place();
         return '
             <aside>
                 ' . (($this->object->action != 'articulos') ? '
+                ' . (($amp) ? Adsense::ampInline() : Adsense::responsive()) . '
                 <div class="content_side content_side_articles">
                     <h2>Artículos</h2>
                     ' . Post_Ui::menuSide() . '
@@ -239,6 +240,7 @@ class Navigation_Ui extends Ui
                     </div>
                 </div>
                 ' : '') . '
+                ' . (($amp) ? Adsense::ampInline() : Adsense::responsive()) . '
                 <div class="content_side content_side_cities">
                     <h2>Ciudades</h2>
                     <div class="content_side_items">
@@ -269,7 +271,7 @@ class Navigation_Ui extends Ui
                         <input type="search" name="search" size="50" placeholder="Buscar..."/>
                     </div>
                     <div class="form_field_submit">
-                        <button type="submit" class="form_submit">
+                        <button type="submit" class="form_submit" role="button" aria-label="Buscar">
                             <i class="icon icon-search"></i>
                             <span>Buscar</span>
                         </button>
@@ -287,7 +289,7 @@ class Navigation_Ui extends Ui
                         <input type="search" name="search" size="50" placeholder="Buscar..."/>
                     </div>
                     <div class="form_field_submit">
-                        <button type="submit" class="form_submit">
+                        <button type="submit" class="form_submit" role="button" aria-label="Buscar">
                             <i class="icon icon-search"></i>
                             <span>Buscar</span>
                         </button>

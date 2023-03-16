@@ -26,16 +26,18 @@ class Category_Ui extends Ui
     public function renderCities()
     {
         $query = '
-            SELECT DISTINCT p.city
+            SELECT p.city, COUNT(p.id) as count_places
             FROM ' . (new Place)->tableName . ' p
-            JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place AND pt.id_category="' . $this->object->id() . '"';
-        $items = Db::returnAllColumn($query);
+            JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place AND pt.id_category="' . $this->object->id() . '"
+            GROUP BY p.city
+            ORDER BY count_places DESC';
+        $items = Db::returnAll($query);
         $info = '';
-        if (count($items) > 0) {
-            asort($items);
-            foreach ($items as $item) {
-                $info .= (trim($item)!='') ? '<a href="' . $this->object->url() . '/' . Text::simple($item) . '" class="cityLink">' . $item . '</a> ' : '';
-            }
+        foreach (array_slice($items, 0, 8) as $item) {
+            $info .= (trim($item['city']) != '') ? '<a href="' . $this->object->url() . '/' . Text::simple($item['city']) . '" title="' . $item['count_places'] . ' ' . $this->object->getBasicInfo() . ' en ' . $item['city'] . '">' . $item['city'] . '</a> ' : '';
+        }
+        if (count($items) > 8) {
+            $info .= '<a href="' . $this->object->url() . '/ciudades" class="city_link_important" title="Ver ' . $this->object->getBasicInfo() . ' en todas las ciudades de ' . Parameter::code('country') . '">Ver las otras '.count($items).' ciudades</a>';
         }
         return ($info != '') ? '
             <div class="city_links">
@@ -86,6 +88,28 @@ class Category_Ui extends Ui
             <div class="categories_simple_wrapper">
                 <h1>' . $options['title_page'] . '</h1>
                 ' . $html . '
+            </div>';
+    }
+
+    public function renderCitiesComplete($options = [])
+    {
+        $query = '
+            SELECT p.city, COUNT(p.id) as count_places
+            FROM ' . (new Place)->tableName . ' p
+            JOIN ' . (new PlaceCategory)->tableName . ' pt ON p.id=pt.id_place AND pt.id_category="' . $this->object->id() . '"
+            GROUP BY p.city
+            ORDER BY p.city';
+        $items = Db::returnAll($query);
+        $info = '';
+        foreach ($items as $item) {
+            $info .= (trim($item['city']) != '') ? '<a href="' . $this->object->url() . '/' . Text::simple($item['city']) . '" title="' . $item['count_places'] . ' ' . $this->object->getBasicInfo() . ' en ' . $item['city'] . '">' . $item['city'] . ' <span>' . $item['count_places'] . '</span></a> ' : '';
+        }
+        return '
+            <div class="categories_simple_wrapper">
+                <h1>' . $this->object->getBasicInfo() . ' en ' . Parameter::code('country') . '</h1>
+                <div class="categories_simple_block">
+                    <div class="categories_simple">' . $info . '</div>
+                </div>
             </div>';
     }
 
