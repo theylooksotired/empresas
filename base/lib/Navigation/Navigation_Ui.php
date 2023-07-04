@@ -340,6 +340,11 @@ class Navigation_Ui extends Ui
             </amp-analytics>';
     }
 
+    public static function autoadsAmp()
+    {
+        return '<amp-auto-ads type="adsense" data-ad-client="ca-pub-7429223453905389"></amp-auto-ads>';
+    }
+
     public static function facebookComments($url)
     {
         return '<amp-facebook-comments layout="responsive" height="300" width="600" data-href="' . $url . '"></amp-facebook-comments>';
