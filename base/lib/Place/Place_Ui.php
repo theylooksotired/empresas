@@ -22,7 +22,8 @@ class Place_Ui extends Ui
         if ($this->object->get('promoted') == '1') {
             return $this->renderPublicPromoted();
         }
-        $image = $this->object->getImageAmp('image', 'small');
+        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
+        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
         return '
         	<div class="item_public">
 				<div class="item_public_info">
@@ -53,7 +54,8 @@ class Place_Ui extends Ui
 
     public function renderPublicPromoted()
     {
-        $image = $this->object->getImageAmp('image', 'small');
+        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
+        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
         return '
         	<div class="item_public item_public_promoted">
 				<div class="item_public_info">
@@ -81,7 +83,8 @@ class Place_Ui extends Ui
             return $this->renderCompletePromoted();
         }
         $short_description = ($this->object->get('short_description') != '') ? '<p class="short_description">' . $this->object->get('short_description') . '</p>' : '';
-        $image = $this->object->getImageAmp('image', 'small');
+        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
+        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
         $image = ($image != '') ? '<div class="description_topImage">' . $image . '</div>' : '';
         return '
         	<div class="item_complete">
@@ -118,7 +121,11 @@ class Place_Ui extends Ui
 					<div class="action_place action_place_comment">
 						<a rel="nofollow" href="' . url('comentarios/comentar/' . $this->object->id()) . '">
 							<div class="action_place_image">
-								<amp-img layout="responsive" width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/comment.svg"></amp-img>
+								' . (($mode == 'amp') ? '
+									<amp-img layout="responsive" width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/comment.svg"></amp-img>
+									' : '
+									<img width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/comment.svg"/>
+									') . '
 							</div>
 							<div class="action_place_ins">
 								<h3>¿Desea escribir un comentario?</h3>
@@ -132,7 +139,11 @@ class Place_Ui extends Ui
 					<div class="action_place action_place_update">
 						<a rel="nofollow" href="' . url('modificar/' . $this->object->id()) . '">
 							<div class="action_place_image">
+								' . (($mode == 'amp') ? '
 								<amp-img layout="responsive" width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/owner.svg"></amp-img>
+								' : '
+								<img width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/owner.svg"/>
+								') . '
 							</div>
 							<div class="action_place_ins">
 								<h3>¿Esta empresa es de su propiedad?</h3>
@@ -146,7 +157,11 @@ class Place_Ui extends Ui
 					<div class="action_place action_place_report">
 						<a rel="nofollow" href="' . url('reportes/reportar/' . $this->object->id()) . '">
 							<div class="action_place_image">
+								' . (($mode == 'amp') ? '
 								<amp-img layout="responsive" width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/warning.svg"></amp-img>
+								' : '
+								<img width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/warning.svg"/>
+								') . '
 							</div>
 							<div class="action_place_ins">
 								<h3>¿Esta información es incorrecta o la empresa no existe?</h3>
@@ -166,7 +181,8 @@ class Place_Ui extends Ui
     public function renderCompletePromoted()
     {
         $short_description = ($this->object->get('short_description') != '') ? '<p class="short_description">' . $this->object->get('short_description') . '</p>' : '';
-        $image = $this->object->getImageAmp('image', 'small');
+        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
+        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
         $image = ($image != '') ? '<div class="description_topImage">' . $image . '</div>' : '';
         return '
         	<div class="item_complete item_complete_promoted">

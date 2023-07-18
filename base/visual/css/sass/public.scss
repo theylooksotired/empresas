@@ -1068,8 +1068,15 @@ body {
 	color: lighten(desaturate($colorText, 60%), 50%);
 }
 .adsense {
-	text-align: center;
-	margin: 0 auto 20px 0;
+    text-align: center;
+    margin: 0 auto 20px 0;
+    border: 1px solid rgba($black, 0.1);
+    min-height: 280px;
+    @include mobile {
+        margin: 20px -10px;
+        border: 0;
+        min-height: 300px;
+    }
 }
 .message {
 	color: darken($colorAccept, 5%);
@@ -1419,6 +1426,13 @@ body {
 		color: rgba(lighten($colorText, 15%), 0.5);
 		padding: 0 10px 0 0;
 	}
+	@include mobile {
+		&.item_public_promoted {
+			.item_public_wrapper_simple {
+				padding: 10px;
+			}
+		}
+	}
 }
 .item_complete {
 	p {
@@ -1543,6 +1557,9 @@ body {
 		}
 		@include mobile() {
 			margin: 0;
+			p {
+				line-height: 1.2em;
+			}
 			&.info_blocks_address {
 				.info_block {
 					&:first-child {
@@ -1776,8 +1793,16 @@ body {
 		}
 		@include mobile() {
 			padding: 10px;
+			h3 {
+				font-size: $fontSizeNormal;
+			}
 			.action_place_image {
 				width: 50px;
+				height: 50px;
+				img {
+					width: 50px;
+					height: 50px;
+				}
 			}
 			.action_place_ins {
 				width: calc(100% - 60px);
@@ -2265,8 +2290,16 @@ body {
 	}
 	@include mobile() {
 		.categories_simple {
-			column-count: 1;
+			column-count: auto;
 			column-gap: 0;
+			a {
+				display: inline-block;
+				margin: 0 5px 10px;
+				padding: 5px 10px;
+				background: rgba($colorText, 0.05);
+				border: 1px solid rgba($colorText, 0.1);
+				@include borderRadius(3px);
+			}
 		}
 	}
 }
@@ -3050,6 +3083,12 @@ body {
 		background-position: center center;
 		background-size: cover;
 		float: left;
+		img {
+			width: 120px;
+			height: 80px;
+			display: block;
+			object-fit: cover;
+		}
 	}
 	.post_information {
 		width: calc(100% - 130px);
@@ -3065,6 +3104,15 @@ body {
 		}
 		.post_short_description {
 			font-size: $fontSizeSmall;
+		}
+	}
+	@include mobile {
+		.post_image {
+			width: 80px;
+			height: 60px;
+		}
+		.post_information {
+			width: calc(100% - 90px);
 		}
 	}
 }
@@ -3143,6 +3191,11 @@ body {
 			font-size: $fontSizeTiny;
 			color: rgba($black, 0.5);
 			font-style: italic;
+		}
+	}
+	@include mobile {
+		.post_short_description {
+			font-size: $fontSizeNormal;
 		}
 	}
 }

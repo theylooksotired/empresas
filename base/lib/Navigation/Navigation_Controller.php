@@ -19,6 +19,7 @@ class Navigation_Controller extends Controller
         $this->login = User_Login::getInstance();
         $this->ui = new Navigation_Ui($this);
         $this->meta_image = ASTERION_BASE_URL . 'visual/img/cover-' . Parameter::code('site_code') . '.jpg';
+        $this->mode = (Parameter::code('mode')!='') ? Parameter::code('mode') : 'amp';
         switch ($this->action) {
             default:
                 if ($this->action != '') {
@@ -26,7 +27,6 @@ class Navigation_Controller extends Controller
                     $info = explode('-', $this->action);
                     $item = (new Place)->read($info[0]);
                     if ($item->id() != '') {
-                        $this->mode = 'amp';
                         $this->head = $item->showUi('JsonHeader');
                         $this->title_page = $item->getBasicInfo();
                         $this->meta_url = $item->url('');
@@ -48,7 +48,6 @@ class Navigation_Controller extends Controller
                 exit();
                 break;
             case 'intro':
-                $this->mode = 'amp';
                 $this->layout_page = 'intro';
                 $this->content = '
                     <div class="search_main_wrapper" style="background-image: url(' . $this->meta_image . ');">
@@ -78,7 +77,6 @@ class Navigation_Controller extends Controller
                 return $this->ui->render();
                 break;
             case 'ciudad':
-                $this->mode = 'amp';
                 if ($this->extraId != '') {
                     header("HTTP/1.1 301 Moved Permanently");
                     header('Location: ' . url($this->action . '/' . $this->id));
@@ -112,7 +110,6 @@ class Navigation_Controller extends Controller
                 return $this->ui->render();
                 break;
             case 'ciudad-tag':
-                $this->mode = 'amp';
                 $item = (new Place)->readFirst(['where' => 'city_url=:city_url AND city_url!=""'], ['city_url' => $this->id]);
                 if ($item->id() != '') {
                     $this->layout_page = 'clean';
@@ -129,7 +126,6 @@ class Navigation_Controller extends Controller
                 }
                 break;
             case 'tag':
-                $this->mode = 'amp';
                 $page = (isset($_GET['pagina']) && $_GET['pagina'] != '') ? ' - Página ' . (intval($_GET['pagina'])) : '';
                 $info = explode('-', $this->id);
                 $item = (new Tag)->read($info[0]);
@@ -184,7 +180,6 @@ class Navigation_Controller extends Controller
                 }
                 break;
             case 'ciudad-categoria':
-                $this->mode = 'amp';
                 $item = (new Place)->readFirst(['where' => 'city_url=:city_url AND city_url!=""'], ['city_url' => $this->id]);
                 if ($item->id() != '') {
                     $this->layout_page = 'clean';
@@ -201,7 +196,6 @@ class Navigation_Controller extends Controller
                 }
                 break;
             case 'categoria':
-                $this->mode = 'amp';
                 $page = (isset($_GET['pagina']) && $_GET['pagina'] != '') ? ' - Página ' . (intval($_GET['pagina'])) : '';
                 $pageUrl = (isset($_GET['pagina']) && $_GET['pagina'] != '') ? '?pagina=' . (intval($_GET['pagina'])) : '';
                 $info = explode('-', $this->id);
@@ -280,7 +274,6 @@ class Navigation_Controller extends Controller
                     exit();
                 }
                 if ($this->id != '') {
-                    $this->mode = 'amp';
                     $search = str_replace('-', ' ', Text::simpleUrl($this->id));
                     $this->title_page = 'Resultados de la busqueda - ' . ucwords($search);
                     $this->title_page_html = '<span>Resultados de la busqueda</span> ' . ucwords($search);
@@ -297,7 +290,6 @@ class Navigation_Controller extends Controller
                 }
                 break;
             case 'articulos':
-                $this->mode = 'amp';
                 $post = (new Post)->readFirst(['where' => 'title_url=:title_url'], ['title_url' => $this->id]);
                 if ($post->id() != '') {
                     $this->title_page = $post->getBasicInfo();
@@ -670,7 +662,10 @@ class Navigation_Controller extends Controller
 
     public function ampFacebookCommentsHeader()
     {
-        return '<script async custom-element="amp-facebook-comments" src="https://cdn.ampproject.org/v0/amp-facebook-comments-0.1.js"></script>';
+        $mode = (Parameter::code('mode')!='') ? Parameter::code('mode') : 'amp';
+        if ($mode == 'amp') {
+            return '<script async custom-element="amp-facebook-comments" src="https://cdn.ampproject.org/v0/amp-facebook-comments-0.1.js"></script>';
+        }
     }
 
     public static function activateJsHeader()
