@@ -38,7 +38,6 @@ class Place_Ui extends Ui
 					' . $this->renderCity() . '
 				</div>
 				<div class="categories_place">' . $this->renderCategoriesPublic() . '</div>
-				<div class="tags_place">' . $this->renderTagsPublic() . '</div>
 			</div>';
     }
 
@@ -73,7 +72,6 @@ class Place_Ui extends Ui
 					</a>
 				</div>
 				<div class="categories_place">' . $this->renderCategoriesPublic() . '</div>
-				<div class="tags_place">' . $this->renderTagsPublic() . '</div>
 			</div>';
     }
 

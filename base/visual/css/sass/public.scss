@@ -1759,8 +1759,12 @@ body {
 		.action_place_image {
 			width: 100px;
 			float: left;
-			amp-img {
+			amp-img,
+			img {
 				width: 100%;
+				height: 100px;
+				object-fit: contain;
+				display: block;
 			}
 		}
 		.action_place_ins {
@@ -1825,6 +1829,8 @@ body {
 				img {
 					width: 50px;
 					height: 50px;
+					object-fit: contain;
+					display: block;
 				}
 			}
 			.action_place_ins {
