@@ -257,7 +257,11 @@ class Navigation_Controller extends Controller
                     $this->title_page_html = '<span>Empresas y negocios en</span> ' . Parameter::code('country');
                     $this->meta_description = $this->title_page;
                     $this->meta_url = url($this->action);
-                    $this->content = Category_Ui::intro(['title_page' => $this->title_page_html]);
+                    $this->content = '
+                        <div class="categories_simple_wrapper">
+                            <h1>' . $this->title_page_html . '</h1>
+                            ' . Cache::show('Category', 'introAll') . '
+                        </div>';
                     return $this->ui->render();
                 }
                 break;
