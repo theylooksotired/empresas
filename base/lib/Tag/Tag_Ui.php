@@ -44,6 +44,9 @@ class Tag_Ui extends Ui
             </div>' : '';
     }
 
+    /**
+     * @cache
+     */
     public static function intro($options = [])
     {
         $query = '
