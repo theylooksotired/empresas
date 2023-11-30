@@ -117,7 +117,9 @@ class Navigation_Controller extends Controller
                     $this->title_page_html = '<span>Empresas y negocios en</span> ' . $item->get('city') . ', ' . Parameter::code('country');
                     $this->meta_description = $this->title_page;
                     $this->meta_url = url($this->action);
-                    $this->content = Category_Ui::intro(['place' => $item, 'title_page' => $this->title_page_html]);
+                    $filename = $this->action . '-' . $this->id;
+                    $this->content = Cache::showContent($filename);
+                    $this->content = ($this->content == '') ? Cache::saveContent($filename, Category_Ui::intro(['place' => $item, 'title_page' => $this->title_page_html])) : $this->content;
                     return $this->ui->render();
                 } else {
                     header("HTTP/1.1 301 Moved Permanently");
