@@ -496,6 +496,7 @@ class Navigation_Controller extends Controller
                 foreach ($comments as $comment) {
                     $response['comments'][] = $comment->values;
                 }
+                $response = mb_convert_encoding($response, 'UTF-8', 'UTF-8');
                 return json_encode($response);
                 break;
             case 'lugar-editar-borrar':
