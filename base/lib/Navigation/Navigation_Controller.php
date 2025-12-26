@@ -256,6 +256,24 @@ class Navigation_Controller extends Controller
                 $this->content = HtmlSection::showFile('terms');
                 return $this->ui->render();
                 break;
+            case 'refresh-db':
+                $this->mode = 'json';
+                $this->checkAuthorization();
+                $result = [];
+                foreach (Init::errorsDatabase() as $item) {
+                    $result[] = $item['query'];
+                    Db::execute($item['query']);
+                }
+                return json_encode($result);
+                break;
+            case 'refresh-translations':
+                $this->mode = 'json';
+                $this->checkAuthorization();
+                $translationsLink = Parameter::code('link_translations');
+                $contents = json_decode(Url::getContents($translationsLink), true);
+                $result = Translation::import($contents);
+                return json_encode($result);
+                break;
 
             /**
              * PUBLIC ADMIN
