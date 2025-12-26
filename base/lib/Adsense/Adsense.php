@@ -63,7 +63,7 @@ class Adsense {
             $adSlot = $adSlotParaguay;
         } elseif (Parameter::code('site_code') == 'peru') {
             $adSlot = $adSlotPeru;
-        } elseif (Parameter::code('site_code') == 'dominicana') {
+        } elseif (Parameter::code('site_code') == 'republica-dominicana') {
             $adSlot = $adSlotDominicana;
         } elseif (Parameter::code('site_code') == 'uruguay') {
             $adSlot = $adSlotUruguay;
