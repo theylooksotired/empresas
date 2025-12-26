@@ -93,16 +93,6 @@
             <required>not_empty</required>
         </attribute>
         <attribute>
-            <name>tags</name>
-            <label>tags</label>
-            <type>multiple_autocomplete</type>
-            <refObject>PostTag</refObject>
-            <linkAttribute>id_post</linkAttribute>
-            <autoCompleteObject>Tag</autoCompleteObject>
-            <autoCompleteAttribute>name</autoCompleteAttribute>
-            <onDelete>cascade</onDelete>
-        </attribute>
-        <attribute>
             <name>active</name>
             <label>active</label>
             <type>checkbox</type>

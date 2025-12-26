@@ -13,8 +13,7 @@ class Post_Ui extends Ui
 
     public function renderPublic()
     {
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         return '
             <div class="post">
                 <a class="post_ins" href="' . $this->object->url() . '">
@@ -30,8 +29,7 @@ class Post_Ui extends Ui
 
     public function renderIntro()
     {
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         return '
             <div class="post">
                 <a class="post_ins" href="' . $this->object->url() . '">
@@ -54,8 +52,7 @@ class Post_Ui extends Ui
 
     public function renderSide()
     {
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         return '
             <div class="post_side">
                 <a class="post_side_ins" href="' . $this->object->url() . '">
@@ -75,13 +72,8 @@ class Post_Ui extends Ui
     public function renderComplete()
     {
         $this->object->loadMultipleValues();
-        $tags = '';
-        foreach ($this->object->get('tags') as $tag) {
-            $tags .= $tag->link() . ' ';
-        }
         $share = $this->share(['share' => [['key' => 'facebook', 'icon' => '<i class="icon icon-facebook"></i>'], ['key' => 'twitter', 'icon' => '<i class="icon icon-twitter"></i>']]]);
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         return '
             <div class="post_complete">
                 <div class="post_short_description">' . nl2br($this->object->get('short_description')) . '</div>

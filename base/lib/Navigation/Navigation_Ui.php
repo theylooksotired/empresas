@@ -20,11 +20,10 @@ class Navigation_Ui extends Ui
         $content_top = (isset($this->object->content_top)) ? '<div class="content_top">' . $this->object->content_top . '</div>' : '';
         $contentExtra = (isset($this->object->contentExtra)) ? $this->object->contentExtra : '';
         $idInside = (isset($this->object->idInside)) ? $this->object->idInside : '';
-        $amp = ($layout_page == 'amp' || (isset($this->object->mode) && $this->object->mode == 'amp')) ? true : false;
         switch ($layout_page) {
             default:
                 return '
-                    ' . $this->header($amp) . '
+                    ' . $this->header() . '
                     <div class="content_wrapper">
                         <div class="content_left">
                             ' . $this->breadCrumbs() . '
@@ -32,7 +31,7 @@ class Navigation_Ui extends Ui
                             ' . $message . '
                             ' . $message_error . '
                             ' . $message_info . '
-                            ' . (($amp) ? Adsense::amp() : Adsense::responsive()) . '
+                            ' . Adsense::responsive('top') . '
                             ' . $content . '
                         </div>
                         <div class="content_right">
@@ -43,7 +42,7 @@ class Navigation_Ui extends Ui
                 break;
             case 'intro':
                 return '
-                    ' . $this->header($amp) . '
+                    ' . $this->header() . '
                     ' . $message . '
                     ' . $message_error . '
                     ' . $message_info . '
@@ -77,10 +76,9 @@ class Navigation_Ui extends Ui
                 break;
             case 'simple':
             case 'form':
-                $amp = (isset($this->object->mode) && $this->object->mode == 'amp') ? true : false;
                 return '
                     <div class="content_all_wrapper content_all_wrapper_clean">
-                        ' . $this->header($amp) . '
+                        ' . $this->header() . '
                         <div class="content_wrapper content_wrapper_simple content_wrapper_clean">
                             <div class="content_wrapper_ins">
                                 ' . $message . '
@@ -93,12 +91,11 @@ class Navigation_Ui extends Ui
                     </div>';
                 break;
             case 'clean':
-                $amp = (isset($this->object->mode) && $this->object->mode == 'amp') ? true : false;
                 return '
-                    ' . $this->header($amp) . '
+                    ' . $this->header() . '
                     <div class="content_wrapper content_wrapper_simple content_wrapper_clean">
                         <div class="content_wrapper_simple_ins">
-                            ' . (($amp) ? Adsense::amp() : Adsense::responsive()) . '
+                            ' . Adsense::responsive('top') . '
                             ' . $message . '
                             ' . $message_error . '
                             ' . $message_info . '
@@ -108,10 +105,9 @@ class Navigation_Ui extends Ui
                     ' . $this->footer();
                 break;
             case 'empty':
-                $amp = (isset($this->object->mode) && $this->object->mode == 'amp') ? true : false;
                 return '
                     <div class="content_all_wrapper content_all_wrapper_empty">
-                        ' . $this->header($amp) . '
+                        ' . $this->header() . '
                         <div class="content_wrapper content_wrapper_simple content_wrapper_clean">
                             ' . $message . '
                             ' . $message_error . '
@@ -121,10 +117,9 @@ class Navigation_Ui extends Ui
                     </div>';
                 break;
             case 'message':
-                $amp = (isset($this->object->mode) && $this->object->mode == 'amp') ? true : false;
                 return '
                     <div class="content_all_wrapper content_all_wrapper_clean">
-                        ' . $this->header($amp) . '
+                        ' . $this->header() . '
                         <div class="content_wrapper content_wrapper_message content_wrapper_clean">
                             ' . (isset($this->object->message_image) ? '<div class="message_image"><img src="' . ASTERION_BASE_URL . 'visual/img/' . $this->object->message_image . '.svg"/></div>' : '') . '
                             <div class="message">
@@ -147,7 +142,7 @@ class Navigation_Ui extends Ui
         }
     }
 
-    public function header($amp = false)
+    public function header()
     {
         $subscribe_top = '';
         $layoutPage = (isset($this->object->layoutPage)) ? $this->object->layoutPage : '';
@@ -171,7 +166,7 @@ class Navigation_Ui extends Ui
                     <div class="header_right">
                         ' . $subscribe_top . '
                         <div class="search_top">
-                            ' . (($amp) ? Navigation_Ui::searchAmp() : Navigation_Ui::search()) . '
+                            ' . Navigation_Ui::search() . '
                         </div>
                     </div>
                 </div>
@@ -226,30 +221,10 @@ class Navigation_Ui extends Ui
     public function contentSide()
     {
         $layout_page = (isset($this->object->layout_page)) ? $this->object->layout_page : '';
-        $amp = ($layout_page == 'amp' || (isset($this->object->mode) && $this->object->mode == 'amp')) ? true : false;
         $place = new Place();
         return '
             <aside>
-                ' . (($this->object->action != 'articulos') ? '
-                ' . (($amp) ? Adsense::ampInline() : Adsense::responsive()) . '
-                <div class="content_side content_side_articles">
-                    <h2>Artículos</h2>
-                    ' . Post_Ui::menuSide() . '
-                    <div class="content_side_button">
-                        <a href="' . url('articulos') . '">Ver todos los artículos</a>
-                    </div>
-                </div>
-                ' : '') . '
-                ' . (($amp) ? Adsense::ampInline() : Adsense::responsive()) . '
-                <div class="content_side content_side_cities">
-                    <h2>Ciudades</h2>
-                    <div class="content_side_items">
-                        ' . $place->showUi('Cities') . '
-                    </div>
-                    <div class="content_side_button">
-                        <a href="' . url('ciudad') . '">Ver todas las ciudades</a>
-                    </div>
-                </div>
+                ' . Adsense::responsive('side') . '
                 <div class="content_side content_side_categories">
                     <h2>Categorías más buscadas</h2>
                     <div class="content_side_items">
@@ -259,6 +234,15 @@ class Navigation_Ui extends Ui
                         <a href="' . url('categoria') . '">Ver todas las categorías</a>
                     </div>
                 </div>
+                <div class="content_side content_side_cities">
+                    <h2>Ciudades</h2>
+                    <div class="content_side_items">
+                        ' . $place->showUi('Cities') . '
+                    </div>
+                    <div class="content_side_button">
+                        <a href="' . url('ciudad') . '">Ver todas las ciudades</a>
+                    </div>
+                </div>
             </aside>';
     }
 
@@ -266,24 +250,6 @@ class Navigation_Ui extends Ui
     {
         return '
             <form action="' . url('buscar') . '" method="post" enctype="multipart/form-data" class="form_search_simple" accept-charset="UTF-8">
-                <fieldset>
-                    <div class="text form_field">
-                        <input type="search" name="search" size="50" placeholder="Buscar..."/>
-                    </div>
-                    <div class="form_field_submit">
-                        <button type="submit" class="form_submit" role="button" aria-label="Buscar">
-                            <i class="icon icon-search"></i>
-                            <span>Buscar</span>
-                        </button>
-                    </div>
-                </fieldset>
-            </form>';
-    }
-
-    public static function searchAmp()
-    {
-        return '
-            <form accept-charset="UTF-8" class="form_search_simple" action="' . url('buscar') . '" method="GET" target="_top">
                 <fieldset>
                     <div class="text form_field">
                         <input type="search" name="search" size="50" placeholder="Buscar..."/>
@@ -330,24 +296,6 @@ class Navigation_Ui extends Ui
               gtag(\'js\', new Date());
               gtag(\'config\', \'' . Parameter::code('google_analytics') . '\');
             </script>';
-    }
-
-    public static function analyticsAmp()
-    {
-        return '
-            <amp-analytics type="googleanalytics">
-                <script type="application/json">{"vars": {"account": "' . Parameter::code('google_analytics') . '"}, "triggers": { "trackPageview": { "on": "visible", "request": "pageview"}}}</script>
-            </amp-analytics>';
-    }
-
-    public static function autoadsAmp()
-    {
-        return '<amp-auto-ads type="adsense" data-ad-client="ca-pub-7429223453905389"></amp-auto-ads>';
-    }
-
-    public static function facebookComments($url)
-    {
-        return '<amp-facebook-comments layout="responsive" height="300" width="600" data-href="' . $url . '"></amp-facebook-comments>';
     }
 
     public static function date($date)

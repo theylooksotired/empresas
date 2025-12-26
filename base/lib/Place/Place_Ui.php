@@ -22,8 +22,7 @@ class Place_Ui extends Ui
         if ($this->object->get('promoted') == '1') {
             return $this->renderPublicPromoted();
         }
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         return '
         	<div class="item_public">
 				<div class="item_public_info">
@@ -53,8 +52,7 @@ class Place_Ui extends Ui
 
     public function renderPublicPromoted()
     {
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         return '
         	<div class="item_public item_public_promoted">
 				<div class="item_public_info">
@@ -81,13 +79,12 @@ class Place_Ui extends Ui
             return $this->renderCompletePromoted();
         }
         $short_description = ($this->object->get('short_description') != '') ? '<p class="short_description">' . $this->object->get('short_description') . '</p>' : '';
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         $image = ($image != '') ? '<div class="description_topImage">' . $image . '</div>' : '';
         return '
         	<div class="item_complete">
 				<h1>' . $this->object->getBasicInfo() . '</h1>
-				' . Adsense::amp() . '
+				' . Adsense::responsive('top') . '
 				<div class="item_complete_info">
 					' . (($image != '' || $short_description != '') ? '
 					<div class="description_top">
@@ -113,17 +110,12 @@ class Place_Ui extends Ui
 					' . $this->share(['title' => 'Compartir en: ', 'share' => [['key' => 'facebook', 'icon' => '<i class="icon icon-facebook"></i>'], ['key' => 'twitter', 'icon' => '<i class="icon icon-twitter"></i>'], ['key' => 'linkedin', 'icon' => '<i class="icon icon-linkedin"></i>']]]) . '
 				</div>
 				<div class="categories_place">' . $this->renderCategoriesPublic() . '</div>
-				<div class="tags_place">' . $this->renderTagsPublic() . '</div>
 				' . $this->renderComments() . '
 				<div class="actions_place">
 					<div class="action_place action_place_comment">
 						<a rel="nofollow" href="' . url('comentarios/comentar/' . $this->object->id()) . '">
 							<div class="action_place_image">
-								' . (($mode == 'amp') ? '
-									<amp-img layout="responsive" width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/comment.svg"></amp-img>
-									' : '
-									<img width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/comment.svg"/>
-									') . '
+								<img width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/comment.svg"/>
 							</div>
 							<div class="action_place_ins">
 								<h3>¿Desea escribir un comentario?</h3>
@@ -137,11 +129,7 @@ class Place_Ui extends Ui
 					<div class="action_place action_place_update">
 						<a rel="nofollow" href="' . url('modificar/' . $this->object->id()) . '">
 							<div class="action_place_image">
-								' . (($mode == 'amp') ? '
-								<amp-img layout="responsive" width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/owner.svg"></amp-img>
-								' : '
 								<img width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/owner.svg"/>
-								') . '
 							</div>
 							<div class="action_place_ins">
 								<h3>¿Esta empresa es de su propiedad?</h3>
@@ -155,11 +143,7 @@ class Place_Ui extends Ui
 					<div class="action_place action_place_report">
 						<a rel="nofollow" href="' . url('reportes/reportar/' . $this->object->id()) . '">
 							<div class="action_place_image">
-								' . (($mode == 'amp') ? '
-								<amp-img layout="responsive" width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/warning.svg"></amp-img>
-								' : '
 								<img width="300" height="300" src="' . ASTERION_BASE_URL . 'visual/img/warning.svg"/>
-								') . '
 							</div>
 							<div class="action_place_ins">
 								<h3>¿Esta información es incorrecta o la empresa no existe?</h3>
@@ -171,7 +155,6 @@ class Place_Ui extends Ui
 						</a>
 					</div>
 				</div>
-				' . Adsense::ampInline() . '
 			</div>
 			' . $this->renderRelated();
     }
@@ -179,8 +162,7 @@ class Place_Ui extends Ui
     public function renderCompletePromoted()
     {
         $short_description = ($this->object->get('short_description') != '') ? '<p class="short_description">' . $this->object->get('short_description') . '</p>' : '';
-        $mode = (Parameter::code('mode') != '') ? Parameter::code('mode') : 'amp';
-        $image = ($mode == 'amp') ? $this->object->getImageAmpWebp('image', 'small') : $this->object->getImageWidth('image', 'small');
+        $image = $this->object->getImageWidth('image', 'small');
         $image = ($image != '') ? '<div class="description_topImage">' . $image . '</div>' : '';
         return '
         	<div class="item_complete item_complete_promoted">
@@ -209,7 +191,6 @@ class Place_Ui extends Ui
 						' . $this->share(['title' => 'Compartir en: ', 'share' => [['key' => 'facebook', 'icon' => '<i class="icon icon-facebook"></i>'], ['key' => 'twitter', 'icon' => '<i class="icon icon-twitter"></i>'], ['key' => 'linkedin', 'icon' => '<i class="icon icon-linkedin"></i>']]]) . '
 					</div>
 					<div class="categories_place">' . $this->renderCategoriesPublic() . '</div>
-					<div class="tags_place">' . $this->renderTagsPublic() . '</div>
 				</div>
 			</div>';
     }
@@ -298,16 +279,6 @@ class Place_Ui extends Ui
 			</div>' : '';
     }
 
-    public function renderTagsPublic()
-    {
-        $this->object->loadMultipleValuesSingleAttribute('tags');
-        $html = '';
-        foreach ($this->object->get('tags') as $tag) {
-            $html .= $tag->showUi('Link');
-        }
-        return $html;
-    }
-
     public function renderCategoriesPublic()
     {
         $this->object->loadMultipleValuesSingleAttribute('categories');
@@ -356,26 +327,29 @@ class Place_Ui extends Ui
             foreach (explode(',', $this->object->get('related')) as $item) {
                 $whereRelated[] = 'id="' . $item . '"';
             }
-            $where = (count($whereRelated) > 0) ? join($whereRelated, ' OR ') : $where;
+			$where = (count($whereRelated) > 0) ? join(' OR ', $whereRelated) : $where;
         }
         $items = new ListObjects('Place', ['where' => $where, 'limit' => '5']);
         return '
         	<div class="related">
 				<h3 class="title">Empresas similares</h3>
-				' . $items->showList(['middle' => Adsense::ampInline(), 'middleRepetitions' => 2]) . '
+				' . $items->showList() . '
 			</div>';
     }
 
     public static function introPlaces()
     {
-        $items = new ListObjects('Place', ['where' => 'promoted = 1', 'order' => 'RAND()', 'limit' => 10]);
+        $items = new ListObjects('Place', ['where' => 'promoted = 1', 'order' => 'RAND()', 'limit' => 5]);
         if ($items->isEmpty()) {
-            $items = new ListObjects('Place', ['order' => 'RAND()', 'limit' => 10]);
+            $items = new ListObjects('Place', ['order' => 'RAND()', 'limit' => 5]);
         }
+		$itemsTop = new ListObjects('Place', ['order' => 'views DESC', 'limit' => 5]);
         return '
         	<div class="intro_places">
 				<h3>Algunas de las empresas en nuestro directorio</h3>
-				' . $items->showList(['middle' => Adsense::ampInline(), 'middleRepetitions' => 2]) . '
+				' . $items->showList() . '
+				<h3>Las empresas más vistas</h3>
+				' . $itemsTop->showList() . '
 			</div>';
     }
 
@@ -384,9 +358,11 @@ class Place_Ui extends Ui
         $info = [
             "@context" => "http://schema.org/",
             "@type" => "LocalBusiness",
+			"@id" => url(''),
             "name" => $this->object->getBasicInfo(),
             "image" => $this->object->getImageUrl('image', 'web', ASTERION_BASE_URL . 'visual/img/directorio.jpg'),
             "telephone" => $this->renderTelephone($this->object->get('telephone')),
+			"url" => url(''),
             "address" => [
                 "@type" => "PostalAddress",
                 "streetAddress" => $this->object->get('address'),

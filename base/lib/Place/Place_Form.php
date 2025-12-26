@@ -15,7 +15,6 @@ class Place_Form extends Form{
 				</div>
 				'.$this->field('short_description').'
 				'.$this->field('description').'
-				'.$this->field('id_tag').'
 				<div class="formLine formLine2">
 					'.$this->field('name_editor').'
 					'.$this->field('email_editor').'

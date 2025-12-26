@@ -19,7 +19,6 @@ class Navigation_Controller extends Controller
         $this->login = User_Login::getInstance();
         $this->ui = new Navigation_Ui($this);
         $this->meta_image = ASTERION_BASE_URL . 'visual/img/cover-' . Parameter::code('site_code') . '.jpg';
-        $this->mode = (Parameter::code('mode')!='') ? Parameter::code('mode') : 'amp';
         switch ($this->action) {
             default:
                 if ($this->action != '') {
@@ -27,6 +26,8 @@ class Navigation_Controller extends Controller
                     $info = explode('-', $this->action);
                     $item = (new Place)->read($info[0]);
                     if ($item->id() != '') {
+                        $item->persistSimple('views', intval($item->get('views')) + 1);
+                        $this->mode = ($item->get('promoted') == '1') ? 'noads' : 'public';
                         $this->head = $item->showUi('JsonHeader');
                         $this->title_page = $item->getBasicInfo();
                         $this->meta_url = $item->url('');
@@ -53,12 +54,12 @@ class Navigation_Controller extends Controller
                     <div class="search_main_wrapper" style="background-image: url(' . $this->meta_image . ');">
                         <div class="search_main">
                             <div class="search_main_ins">
-                                ' . Navigation_Ui::searchAmp() . '
+                                ' . Navigation_Ui::search() . '
                             </div>
                         </div>
                     </div>
                     <div class="content_wrapper content_wrapper_intro">
-                        ' . Adsense::amp() . '
+                        ' . Adsense::responsive('top') . '
                         <div class="intro_page">
                             <div class="intro_page_left">
                                 <div class="intro_page_left_top">
@@ -105,7 +106,7 @@ class Navigation_Controller extends Controller
                         url('ciudad') => 'Ciudades',
                         url('ciudad/' . $item->get('city_url')) => $item->get('city'),
                     ];
-                    $this->content = $items->showListPager(['function' => 'Public', 'middle' => Adsense::ampInline(), 'showResults' => false]);
+                    $this->content = $items->showListPager(['function' => 'Public', 'middle' => Adsense::responsive('middle'), 'showResults' => false]);
                 }
                 return $this->ui->render();
                 break;
@@ -181,7 +182,7 @@ class Navigation_Controller extends Controller
                     $this->head = $items->metaNavigation();
                     $this->content = '
                         ' . (($this->extraId != '') ? '' : '' . $item->showUi('Cities')) . '
-                        ' . $items->showListPager(['function' => 'Public', 'middle' => Adsense::ampInline(), 'middleRepetitions' => 2, 'showResults' => false]);
+                        ' . $items->showListPager(['function' => 'Public', 'middle' => Adsense::responsive('middle'), 'middleRepetitions' => 2, 'showResults' => false]);
                     return $this->ui->render();
                 } else {
                     $this->layout_page = 'clean';
@@ -218,7 +219,7 @@ class Navigation_Controller extends Controller
                         $items = new ListObjects('Place', ['where' => 'search LIKE :search', 'order' => 'promoted DESC, title_url', 'results' => '10'], ['search' => '%' . $search . '%']);
                     }
                     $this->head = $items->metaNavigation();
-                    $this->content = $items->showListPager(['function' => 'Public', 'message' => '<div class="message">Lo sentimos, pero no encontramos resultados para su busqueda.</div>', 'middle' => Adsense::ampInline(), 'showResults' => false]);
+                    $this->content = $items->showListPager(['function' => 'Public', 'message' => '<div class="message">Lo sentimos, pero no encontramos resultados para su busqueda.</div>', 'middle' => Adsense::responsive('middle'), 'showResults' => false]);
                     return $this->ui->render();
                 } else {
                     header("HTTP/1.1 301 Moved Permanently");
@@ -232,9 +233,7 @@ class Navigation_Controller extends Controller
                     $this->meta_description = $post->get('short_description');
                     $this->meta_url = $post->url();
                     $this->meta_image = $post->getImageUrl('image', 'huge');
-                    $this->head = '
-                        ' . $post->showUi('JsonHeader') . '
-                        ' . $this->ampFacebookCommentsHeader();
+                    $this->head = $post->showUi('JsonHeader');
                     $this->bread_crumbs = [
                         url('articulos') => 'Artículos',
                         $post->url() => $post->getBasicInfo(),
@@ -259,9 +258,10 @@ class Navigation_Controller extends Controller
                 break;
 
             /**
-                 * PUBLIC ADMIN
-                 */
+             * PUBLIC ADMIN
+             */
             case 'inscribir':
+                $this->mode = 'noads';
                 $this->layout_page = 'form';
                 $this->title_page = 'Inscriba a su empresa en nuestro directorio';
                 $this->meta_description = 'Inscriba de forma totalmente gratuita a su empresa en nuestro directorio.';
@@ -288,6 +288,7 @@ class Navigation_Controller extends Controller
                 return $this->ui->render();
                 break;
             case 'modificar':
+                $this->mode = 'noads';
                 $this->layout_page = 'simple';
                 $this->activateJS();
                 $this->head .= '<meta name="robots" content="noindex,nofollow"/>';
@@ -331,29 +332,6 @@ class Navigation_Controller extends Controller
                     $this->title_page = 'La empresa no existe';
                 }
                 return $this->ui->render();
-                break;
-            case 'tag-autocomplete':
-                $this->mode = 'json';
-                $autocomplete = (isset($_GET['term'])) ? $_GET['term'] : '';
-                if ($autocomplete != '' && strlen($autocomplete) >= 3) {
-                    $query = '
-                        SELECT t.id as id, t.name as info, COUNT(t.id) as number_items
-                        FROM ' . (new Tag)->tableName . ' t
-                        JOIN ' . (new PlaceTag)->tableName . ' pt ON t.id=pt.id_tag
-                        WHERE t.name LIKE :autocomplete
-                        GROUP BY t.id
-                        ORDER BY number_items DESC, t.name_url
-                        LIMIT 5';
-                    $results = [];
-                    foreach (Db::returnAll($query, ['autocomplete' => '%' . $autocomplete . '%']) as $result) {
-                        $results[] = [
-                            'id' => $result['id'],
-                            'value' => $result['info'],
-                            'label' => $result['info'] . ' (' . $result['number_items'] . ')',
-                        ];
-                    }
-                    return json_encode($results);
-                }
                 break;
             case 'category-autocomplete':
                 $this->mode = 'json';
@@ -483,7 +461,14 @@ class Navigation_Controller extends Controller
             case 'info':
                 $this->checkAuthorization();
                 $this->mode = 'json';
-                $response = ['status' => StatusCode::OK, 'places' => [], 'reports' => []];
+                $response = [
+                    'status' => StatusCode::OK,
+                    'code' => Parameter::code('site_code'),
+                    'url' => url(''),
+                    'places' => [],
+                    'reports' => [],
+                    'comments' => []
+                ];
                 $places = (new PlaceEdit)->readList(['where' => 'published!="1" OR published IS NULL', 'order' => 'id DESC']);
                 foreach ($places as $place) {
                     $response['places'][] = $place->values;
@@ -595,14 +580,6 @@ class Navigation_Controller extends Controller
     public function activateJS()
     {
         $this->head = Navigation_Controller::activateJsHeader();
-    }
-
-    public function ampFacebookCommentsHeader()
-    {
-        $mode = (Parameter::code('mode')!='') ? Parameter::code('mode') : 'amp';
-        if ($mode == 'amp') {
-            return '<script async custom-element="amp-facebook-comments" src="https://cdn.ampproject.org/v0/amp-facebook-comments-0.1.js"></script>';
-        }
     }
 
     public static function activateJsHeader()

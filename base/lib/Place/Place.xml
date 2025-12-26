@@ -10,7 +10,7 @@
 			<title>places</title>
             <label>#title</label>
 			<pager>20</pager>
-			<orderBy>title_url</orderBy>
+			<orderBy>title_url,views</orderBy>
 			<searchQuery>SELECT * FROM #TABLE WHERE title LIKE "%#SEARCH%"</searchQuery>
             <searchQueryCount>SELECT COUNT(*) AS count_results FROM #TABLE WHERE title LIKE "%#SEARCH%"</searchQueryCount>
 			<label>#title</label>
@@ -142,16 +142,6 @@
             <type>text_long</type>
         </attribute>
         <attribute>
-            <name>tags</name>
-            <label>Etiquetas</label>
-            <type>multiple_autocomplete</type>
-            <refObject>PlaceTag</refObject>
-            <linkAttribute>id_place</linkAttribute>
-            <autoCompleteObject>Tag</autoCompleteObject>
-            <autoCompleteAttribute>name</autoCompleteAttribute>
-            <onDelete>cascade</onDelete>
-        </attribute>
-        <attribute>
             <name>categories</name>
             <label>Categorias</label>
             <type>multiple_autocomplete</type>
@@ -160,6 +150,12 @@
             <autoCompleteObject>Category</autoCompleteObject>
             <autoCompleteAttribute>name</autoCompleteAttribute>
             <onDelete>cascade</onDelete>
+        </attribute>
+        <attribute>
+            <name>views</name>
+            <label>Vistas</label>
+            <type>text_integer</type>
+            <baseType>integer</baseType>
         </attribute>
         <attribute>
             <name>promoted</name>
