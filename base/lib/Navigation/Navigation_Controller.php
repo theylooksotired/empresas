@@ -227,6 +227,9 @@ class Navigation_Controller extends Controller
                 }
                 break;
             case 'articulos':
+                header("HTTP/1.1 301 Moved Permanently");
+                header('Location: ' . url(''));
+                exit();
                 $post = (new Post)->readFirst(['where' => 'title_url=:title_url'], ['title_url' => $this->id]);
                 if ($post->id() != '') {
                     $this->title_page = $post->getBasicInfo();

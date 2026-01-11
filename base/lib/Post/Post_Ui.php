@@ -89,7 +89,6 @@ class Post_Ui extends Ui
             <div class="item_complete_share">
                 <div class="item_complete_share_title">Ayúdanos compartiendo este artículo</div>
                 ' . $share . '
-                ' . Navigation_Ui::facebookComments($this->object->url()) . '
             </div>
             ' . $this->renderRelated();
     }
