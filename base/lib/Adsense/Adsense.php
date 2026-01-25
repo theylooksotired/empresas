@@ -10,7 +10,14 @@
 */
 class Adsense {
 
+    static public function header()
+    {
+        $header = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7429223453905389" crossorigin="anonymous"></script>';
+        return (Adsense::checkHidden()) ? '' : $header;
+    }
+
     static public function responsive($type = '') {
+        if (Adsense::checkHidden()) return ''; // Check if ads should be hidden for this country
         $typesArgentina = ['top' => '3164319923', 'middle' => '8408907743', 'side' => '8433776711'];
         $typesChile = ['top' => '6565520647', 'middle' => '7120695044', 'side' => '5846323587'];
         $typesBolivia = ['top' => '4469662733', 'middle' => '5934965252', 'side' => '9635177741'];
@@ -85,6 +92,11 @@ class Adsense {
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>';
+    }
+
+    static public function checkHidden()
+    {
+        return true;
     }
 
 }
