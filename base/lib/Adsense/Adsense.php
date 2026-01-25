@@ -96,7 +96,19 @@ class Adsense {
 
     static public function checkHidden()
     {
-        return true;
+        if (isset($GLOBALS['adsense_hidden'])) {
+            return $GLOBALS['adsense_hidden'];
+        }
+        $hiddenCountries = ['china', 'cuba', 'venezuela'];
+        $hiddenCodes = ['CN', 'CU', 'VE'];
+        try {
+            require_once ASTERION_BASE_FILE . 'geo/get_country.php';
+            $geoCountry = new GeoCountry();
+            $GLOBALS['adsense_hidden'] = (in_array($geoCountry->getCountryCodeOrEmpty(), $hiddenCodes)) ? true : false;
+        } catch (Exception $e) {
+            $GLOBALS['adsense_hidden'] = false;
+        }
+        return $GLOBALS['adsense_hidden'];
     }
 
 }
