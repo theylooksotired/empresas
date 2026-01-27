@@ -96,7 +96,7 @@ class Adsense {
 
     static public function checkHidden()
     {
-        return false;
+        return true;
         if (isset($GLOBALS['adsense_hidden'])) {
             return $GLOBALS['adsense_hidden'];
         }
@@ -110,6 +110,48 @@ class Adsense {
             $GLOBALS['adsense_hidden'] = false;
         }
         return $GLOBALS['adsense_hidden'];
+    }
+
+    static public function ads()
+    {
+        return [
+            [
+                'url' => 'https://www.plasticwebs.com/servicios/alojamiento-web',
+                'image' => 'https://www.plasticwebs.com/base/visual/img/logoSocial.jpg',
+                'title' => '¿Necesitas alojamiento web para tu sitio web?',
+                'description' => 'Brindamos alojamiento web en servidores internacionales de alto rendimiento, monitoreados y gestionados desde Bolivia para garantizar estabilidad, seguridad y soporte cercano.'
+            ],
+            [
+                'url' => 'https://www.plasticwebs.com/servicios/alojamiento-web',
+                'image' => 'https://www.plasticwebs.com/base/visual/img/logoSocial.jpg',
+                'title' => 'Ya es hora de cambiar tu alojamiento web',
+                'description' => 'Si tu sitio web es lento, tiene caídas frecuentes o no recibes soporte adecuado, es momento de cambiar a nuestro servicio de alojamiento web en Bolivia, diseñado para ofrecerte rendimiento y confiabilidad.'
+            ],
+            [
+                'url' => 'https://www.youtube.com/@recetario-de-cocina',
+                'image' => 'https://www.recetario-de-cocina.com/base/visual/img/icon.png',
+                'title' => 'Recetas de Cocina para preparar platos deliciosos',
+                'description' => 'Descubre una variedad de recetas de cocina fáciles y deliciosas en nuestro canal de YouTube. Aprende a preparar platos tradicionales y modernos con instrucciones paso a paso.'
+            ],
+            [
+                'url' => 'https://www.youtube.com/@recetario-de-cocina',
+                'image' => 'https://www.recetario-de-cocina.com/base/visual/img/icon.png',
+                'title' => 'Descubre recetas de cocina fáciles y deliciosas',
+                'description' => 'Explora nuestro canal de YouTube para encontrar recetas de cocina que se adapten a todos los gustos y niveles de habilidad. Desde aperitivos hasta postres, tenemos todo lo que necesitas para cocinar con éxito.'
+            ],
+            [
+                'url' => 'https://www.youtube.com/@recetario-de-cocina',
+                'image' => 'https://www.recetario-de-cocina.com/base/visual/img/icon.png',
+                'title' => 'Ricas recetas de cocina para todos los gustos',
+                'description' => 'Visita nuestro canal de YouTube y descubre una amplia gama de recetas de cocina que te ayudarán a preparar comidas deliciosas y nutritivas para ti y tu familia.'
+            ],
+            [
+                'url' => 'https://www.youtube.com/@recetario-de-cocina',
+                'image' => 'https://www.recetario-de-cocina.com/base/visual/img/icon.png',
+                'title' => 'Sabrosas recetas de cocina en YouTube',
+                'description' => 'Únete a nuestro canal de YouTube para aprender nuevas recetas de cocina que te inspirarán a crear platos sabrosos y atractivos. Perfecto para cocineros de todos los niveles.'
+            ]
+        ];
     }
 
 }

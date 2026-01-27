@@ -106,7 +106,7 @@ class Navigation_Controller extends Controller
                         url('ciudad') => 'Ciudades',
                         url('ciudad/' . $item->get('city_url')) => $item->get('city'),
                     ];
-                    $this->content = $items->showListPager(['function' => 'Public', 'middle' => Adsense::responsive('middle'), 'showResults' => false]);
+                    $this->content = $items->showListPager(['function' => 'Public', 'middle' => Place_Ui::adMiddle(), 'showResults' => false]);
                 }
                 return $this->ui->render();
                 break;
@@ -145,7 +145,7 @@ class Navigation_Controller extends Controller
                         } else {
                             $city = (new Place)->readFirst(['where' => 'city_url=:city_url'], ['city_url' => $this->extraId]);
                             $this->title_page = $item->getBasicInfo() . ' en ' . $city->get('city') . ', ' . Parameter::code('country') . $page;
-                            $this->title_page_html = '<span>' . $city->get('city') . ', ' . Parameter::code('country') . '</span> ' . $item->getBasicInfo();
+                            $this->title_page_html = $item->getBasicInfo() . '<span> en ' . $city->get('city') . ', ' . Parameter::code('country') . '</span>';
                             $this->meta_description = 'En esta página tenemos un listado completo de teléfonos y direcciones sobre ' . $item->getBasicInfo() . ' en la ciudad de ' . $city->get('city') . ' de ' . Parameter::code('country');
                             $this->meta_url = url($this->action . '/' . $this->id . '/' . $this->extraId) . $pageUrl;
                             $query = 'SELECT p.* FROM ' . (new Place)->tableName . ' p
@@ -182,7 +182,7 @@ class Navigation_Controller extends Controller
                     $this->head = $items->metaNavigation();
                     $this->content = '
                         ' . (($this->extraId != '') ? '' : '' . $item->showUi('Cities')) . '
-                        ' . $items->showListPager(['function' => 'Public', 'middle' => Adsense::responsive('middle'), 'middleRepetitions' => 2, 'showResults' => false]);
+                        ' . $items->showListPager(['function' => 'Public', 'middle' => Place_Ui::adMiddle(), 'showResults' => false]);
                     return $this->ui->render();
                 } else {
                     $this->layout_page = 'clean';
@@ -219,7 +219,7 @@ class Navigation_Controller extends Controller
                         $items = new ListObjects('Place', ['where' => 'search LIKE :search', 'order' => 'promoted DESC, title_url', 'results' => '10'], ['search' => '%' . $search . '%']);
                     }
                     $this->head = $items->metaNavigation();
-                    $this->content = $items->showListPager(['function' => 'Public', 'message' => '<div class="message">Lo sentimos, pero no encontramos resultados para su busqueda.</div>', 'middle' => Adsense::responsive('middle'), 'showResults' => false]);
+                    $this->content = $items->showListPager(['function' => 'Public', 'message' => '<div class="message">Lo sentimos, pero no encontramos resultados para su busqueda.</div>', 'middle' => Place_Ui::adMiddle(), 'showResults' => false]);
                     return $this->ui->render();
                 } else {
                     header("HTTP/1.1 301 Moved Permanently");

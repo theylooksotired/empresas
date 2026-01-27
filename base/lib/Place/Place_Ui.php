@@ -107,7 +107,6 @@ class Place_Ui extends Ui
 					</div>
 					' . $this->renderInfoBlockIcons() . '
 					' . (($this->object->get('description') != '') ? '<div class="description">' . $this->object->get('description') . '</div>' : '') . '
-					' . $this->share(['title' => 'Compartir en: ', 'share' => [['key' => 'facebook', 'icon' => '<i class="icon icon-facebook"></i>'], ['key' => 'twitter', 'icon' => '<i class="icon icon-twitter"></i>'], ['key' => 'linkedin', 'icon' => '<i class="icon icon-linkedin"></i>']]]) . '
 				</div>
 				<div class="categories_place">' . $this->renderCategoriesPublic() . '</div>
 				' . $this->renderComments() . '
@@ -333,7 +332,7 @@ class Place_Ui extends Ui
         return '
         	<div class="related">
 				<h3 class="title">Empresas similares</h3>
-				' . $items->showList() . '
+				' . $items->showList(['function' => 'Public', 'middle' => Place_Ui::adMiddle()]) . '
 			</div>';
     }
 
@@ -352,6 +351,26 @@ class Place_Ui extends Ui
 				' . $itemsTop->showList() . '
 			</div>';
     }
+
+	static public function adMiddle()
+	{
+		$ads = Adsense::ads();
+		$ad = $ads[array_rand($ads)];
+		return '
+        	<div class="item_public">
+				<div class="item_public_info">
+					<a href="' . $ad['url'] . '" target="_blank" rel="nofollow sponsored">
+						<div class="item_public_wrapper">
+							<div class="item_public_wrapper_left"><img src="' . $ad['image'] . '" alt="' . $ad['title'] . '"></div>
+							<div class="item_public_wrapper_right">
+								<h2>' . $ad['title'] . '</h2>
+								<p class="short_description">' . $ad['description'] . '</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>';
+	}
 
     public function renderJsonHeader()
     {
