@@ -12,8 +12,7 @@ class Adsense {
 
     static public function header()
     {
-        $header = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7429223453905389" crossorigin="anonymous"></script>';
-        return (Adsense::checkHidden()) ? '' : $header;
+        return '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7429223453905389" crossorigin="anonymous"></script>';
     }
 
     static public function responsive($type = '') {
